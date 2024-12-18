@@ -24,6 +24,7 @@ namespace MyProjectEntity.Controllers
             List<CourseViewModel> viewModels = _mapper.Map<List<CourseViewModel>>(courses);
             return View(viewModels);
         }
+
         // GET: CoursesController/Details/5
         public ActionResult Details(int id)
         {
