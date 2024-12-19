@@ -1,8 +1,9 @@
+using Data;
 using Interfaces;
 using Interfaces.@interface;
 using Microsoft.EntityFrameworkCore;
 using MyProjectEntity;
-using MyProjectEntity.Data;
+
 using Repository;
 
 

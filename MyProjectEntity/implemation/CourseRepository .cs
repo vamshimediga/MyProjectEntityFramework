@@ -1,7 +1,8 @@
 ﻿
+using Data;
 using Interfaces.@interface;
 using Microsoft.EntityFrameworkCore;
-using MyProjectEntity.Data;
+
 using MyProjectEntity.Entities;
 
 namespace Repository
