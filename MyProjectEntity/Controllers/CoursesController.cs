@@ -104,18 +104,22 @@ namespace MyProjectEntity.Controllers
 
 
         // GET: CoursesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Course course = await _courseRepository.GetCourseByIdAsync(id);
+            CourseViewModel courseView = _mapper.Map<CourseViewModel>(course);
+            return View(courseView);
+            
         }
 
         // POST: CoursesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+               await  _courseRepository.DeleteCourseAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
