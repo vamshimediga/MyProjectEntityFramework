@@ -26,31 +26,39 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: CoursesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            Course course = await _courseRepository.GetCourseByIdAsync(id);
+            CourseViewModel viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(viewModel);
         }
 
         // GET: CoursesController/Create
-        public ActionResult Create()
+        public  ActionResult Create()
         {
-            return View();
+            CourseViewModel model = new CourseViewModel();
+            return View(model);
         }
 
         // POST: CoursesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<JsonResult> Create(CourseViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+               
+                Course course = _mapper.Map<Course>(model);
+                await _courseRepository.AddCourseAsync(course);
+                return Json(new { success = true });
             }
-            catch
+            else
             {
-                return View();
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, errorMessage = string.Join("<br/>", errors) });
             }
         }
+
 
         // GET: CoursesController/Edit/5
         public ActionResult Edit(int id)
