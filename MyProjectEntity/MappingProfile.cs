@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities;
 using EntitiesViewModel;
 using MyProjectEntity.Entities;
 
@@ -15,7 +16,8 @@ namespace MyProjectEntity
             CreateMap<CourseViewModel, Course>();
 
 
-           
+            CreateMap<Customer, CustomerViewModel>();
+            CreateMap<CustomerViewModel, Customer>();
 
         }
     }

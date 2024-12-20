@@ -1,3 +1,5 @@
+using BusinessLayer;
+using BusinessLayer.implemation;
 using Data;
 using Interfaces;
 using Interfaces.@interface;
@@ -12,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-
+builder.Services.AddScoped<ICustomer, CustomerRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
