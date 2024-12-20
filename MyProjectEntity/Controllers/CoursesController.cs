@@ -18,11 +18,30 @@ namespace MyProjectEntity.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<Course> courses = (List<Course>)await _courseRepository.GetAllCoursesAsync();
-            List<CourseViewModel> viewModels = _mapper.Map<List<CourseViewModel>>(courses);
-            return View(viewModels);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCourses()
+        {
+            try
+            {
+                // Fetch all courses
+                List<Course> courses = (List<Course>)await _courseRepository.GetAllCoursesAsync();
+
+                // Map to ViewModel
+                List<CourseViewModel> viewModels = _mapper.Map<List<CourseViewModel>>(courses);
+
+                // Return data in the format DataTables expects
+                return Json(new { data = viewModels });
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                return Json(new { error = ex.Message });
+            }
         }
 
         // GET: CoursesController/Details/5

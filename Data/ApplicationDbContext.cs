@@ -25,6 +25,9 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
             // Configure decimal precision for TotalAmount
+            modelBuilder.Entity<Course>().ToTable(nameof(Course));
+            modelBuilder.Entity<Customer>().ToTable(nameof(Customer));
+            modelBuilder.Entity<Order>().ToTable(nameof(Order));
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point

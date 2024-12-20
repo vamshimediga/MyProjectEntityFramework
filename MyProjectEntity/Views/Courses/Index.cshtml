@@ -1,67 +1,60 @@
-﻿@model IEnumerable<CourseViewModel>;
+﻿@model IEnumerable<CourseViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Courses";
 }
 
-<h1>Index</h1>
+<h1>Courses</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
-<table class="table">
+<table id="coursesTable" class="table table-striped display">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Credits)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.CourseID)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseDescription)</th>
+            <th>@Html.DisplayNameFor(model => model.Credits)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.ModifiedDate)</th>
+            <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Credits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CourseID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CourseID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CourseID })
-                </td>
-            </tr>
-        }
-    </tbody>
+    <tbody></tbody>
 </table>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#coursesTable').DataTable({
+                "processing": true,
+                "serverSide": false, // Set to true for server-side processing
+                "ajax": {
+                    "url": "/Courses/GetCourses",
+                    "type": "GET"
+                },
+                "columns": [
+                    { "data": "courseID" },
+                    { "data": "courseName" },
+                    { "data": "courseDescription" },
+                    { "data": "credits" },
+                    { "data": "createdDate" },
+                    { "data": "modifiedDate" },
+                    {
+                        "data": "courseID",
+                        "render": function (data) {
+                            return `
+                                        <a href='/Courses/Edit/${data}' class='btn btn-sm btn-warning'>Edit</a>
+                                        <a href='/Courses/Details/${data}' class='btn btn-sm btn-info'>Details</a>
+                                        <a href='/Courses/Delete/${data}' class='btn btn-sm btn-danger'>Delete</a>
+                                    `;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}
