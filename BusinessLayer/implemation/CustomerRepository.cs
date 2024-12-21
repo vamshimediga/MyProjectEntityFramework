@@ -1,5 +1,6 @@
 ﻿using Data;
 using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,16 @@ namespace BusinessLayer.implemation
 
         public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            return await _context.Customers
-                .FromSqlInterpolated($"EXEC GetCustomerById @CustomerId = {customerId}")
-                .FirstOrDefaultAsync();
+            var sql = "EXEC GetCustomerById @CustomerId = {0}";
+            Customer customers = _context.Customers
+                                    .FromSqlRaw(sql, customerId)
+                                    .AsEnumerable() // Move the query to the client side
+                                    .FirstOrDefault(); // Use synchronous method
+            return await Task.FromResult(customers);
         }
+
+
+
 
         public async Task AddCustomerAsync(Customer customer)
         {

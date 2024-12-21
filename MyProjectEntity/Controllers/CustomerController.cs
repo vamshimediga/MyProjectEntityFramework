@@ -32,9 +32,12 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: CustomerController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            Customer customer = await _customerRepository.GetCustomerByIdAsync(id);
+            // Map to ViewModel
+            CustomerViewModel viewModels = _mapper.Map<CustomerViewModel>(customer);
+            return View(viewModels);
         }
 
         // GET: CustomerController/Create

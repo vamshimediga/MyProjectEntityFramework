@@ -15,5 +15,10 @@ namespace Entities
 
         // Navigation property for related orders
         public ICollection<Order> Orders { get; set; } // One-to-many relationship
+
+        public static explicit operator List<object>(Customer v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
