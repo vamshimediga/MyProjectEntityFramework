@@ -43,16 +43,19 @@ namespace MyProjectEntity.Controllers
         // GET: CustomerController/Create
         public ActionResult Create()
         {
-            return View();
+            CustomerViewModel customerView = new CustomerViewModel();
+            return View(customerView);
         }
 
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CustomerViewModel customerView)
         {
             try
             {
+                Customer customer =_mapper.Map<Customer>(customerView);
+                _customerRepository.AddCustomerAsync(customer);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -62,19 +65,24 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: CustomerController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Customer customer = await _customerRepository.GetCustomerByIdAsync(id);
+            // Map to ViewModel
+            CustomerViewModel viewModels = _mapper.Map<CustomerViewModel>(customer);
+            return View(viewModels);
         }
 
         // POST: CustomerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(CustomerViewModel viewModels)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                Customer customer = _mapper.Map<Customer>(viewModels);
+                await _customerRepository.UpdateCustomerAsync(customer);
+                return Json(new { success = true, message = "Customer updated successfully." });
             }
             catch
             {
@@ -83,9 +91,13 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: CustomerController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Customer customer = await _customerRepository.GetCustomerByIdAsync(id);
+            // Map to ViewModel
+            CustomerViewModel viewModels = _mapper.Map<CustomerViewModel>(customer);
+            return View(viewModels);
+           
         }
 
         // POST: CustomerController/Delete/5
@@ -95,6 +107,7 @@ namespace MyProjectEntity.Controllers
         {
             try
             {
+                _customerRepository.DeleteCustomerAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
