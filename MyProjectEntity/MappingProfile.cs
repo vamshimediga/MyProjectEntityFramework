@@ -21,6 +21,13 @@ namespace MyProjectEntity
 
             CreateMap<Order, OrderViewModel>();
             CreateMap<OrderViewModel, Order>();
+
+            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductViewModel, Product>();
+
+
+            CreateMap<Category, CategoryViewModel>();
+            CreateMap<CategoryViewModel, Category>();   
         }
     }
 }

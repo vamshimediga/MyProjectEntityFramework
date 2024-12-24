@@ -19,6 +19,8 @@ namespace Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +30,8 @@ namespace Data
             modelBuilder.Entity<Course>().ToTable(nameof(Course));
             modelBuilder.Entity<Customer>().ToTable(nameof(Customer));
             modelBuilder.Entity<Order>().ToTable(nameof(Order));
+            modelBuilder.Entity<Category>().ToTable(nameof(Categories));
+            modelBuilder.Entity<Product>().ToTable(nameof(Products));
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point
@@ -45,6 +49,19 @@ namespace Data
                 .WithMany(c => c.Orders) // Customer has many Orders
                 .HasForeignKey(o => o.CustomerId) // Foreign Key in Order
                 .OnDelete(DeleteBehavior.Cascade); // Cascade delete and update
+
+             modelBuilder.Entity<Order>()
+                 .HasOne(o => o.Customer)
+                 .WithMany(c => c.Orders)
+                 .HasForeignKey(o => o.CustomerId);
+
+            modelBuilder.Entity<Product>()
+          .HasOne(p => p.Category)
+          .WithMany(c => c.Products)
+          .HasForeignKey(p => p.CategoryId)
+          .OnDelete(DeleteBehavior.Cascade);  // Enable Cascade Delete
         }
+
+    
     }
 }

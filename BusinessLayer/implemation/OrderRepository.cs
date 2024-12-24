@@ -21,7 +21,15 @@ namespace BusinessLayer.implemation
 
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            return await _context.Orders.FromSqlRaw("EXEC GetAllOrders").ToListAsync();
+            var orders = await _context.Orders.FromSqlRaw("EXEC GetAllOrders").ToListAsync();
+
+            // Explicitly load the related Customer data
+            foreach (var order in orders)
+            {
+                await _context.Entry(order).Reference(o => o.Customer).LoadAsync();
+            }
+
+            return orders;
         }
 
         public async Task<Order> GetOrderByIdAsync(int orderId)
