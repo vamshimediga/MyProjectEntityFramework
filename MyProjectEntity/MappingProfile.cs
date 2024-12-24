@@ -19,6 +19,8 @@ namespace MyProjectEntity
             CreateMap<Customer, CustomerViewModel>();
             CreateMap<CustomerViewModel, Customer>();
 
+            CreateMap<Order, OrderViewModel>();
+            CreateMap<OrderViewModel, Order>();
         }
     }
 }

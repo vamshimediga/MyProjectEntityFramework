@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICustomer, CustomerRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
