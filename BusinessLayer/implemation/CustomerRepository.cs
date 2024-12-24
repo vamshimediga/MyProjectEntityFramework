@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.implemation
 {
-    public class CustomerRepository:ICustomer
+    public class CustomerRepository : ICustomer
     {
         private readonly ApplicationDbContext _context;
 
@@ -41,20 +41,39 @@ namespace BusinessLayer.implemation
 
         public async Task AddCustomerAsync(Customer customer)
         {
-            await _context.Database.ExecuteSqlInterpolatedAsync(
-                $"EXEC AddCustomer @Name = {customer.CustomerName}, @Email = {customer.Email}, @PhoneNumber = {customer.PhoneNumber}");
+            var parameters = new[]
+            {
+                         new SqlParameter("@Name", customer.CustomerName),
+                        new SqlParameter("@Email", customer.Email),
+                         new SqlParameter("@PhoneNumber", customer.PhoneNumber)
+            };
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC AddCustomer @Name, @Email, @PhoneNumber", parameters);
         }
 
         public async Task UpdateCustomerAsync(Customer customer)
         {
-            await _context.Database.ExecuteSqlInterpolatedAsync(
-                $"EXEC UpdateCustomer @CustomerId = {customer.CustomerId}, @Name = {customer.CustomerName}, @Email = {customer.Email}, @PhoneNumber = {customer.PhoneNumber}");
+            var parameters = new[]{
+                                  new SqlParameter("@CustomerId", customer.CustomerId),
+                                  new SqlParameter("@Name", customer.CustomerName),
+                                  new SqlParameter("@Email", customer.Email),
+                                  new SqlParameter("@PhoneNumber", customer.PhoneNumber)
+             };
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC UpdateCustomer @CustomerId, @Name, @Email, @PhoneNumber", parameters);
         }
 
         public async Task DeleteCustomerAsync(int customerId)
         {
-            await _context.Database.ExecuteSqlInterpolatedAsync(
-                $"EXEC DeleteCustomer @CustomerId = {customerId}");
+            var parameters = new[]
+            {
+        new SqlParameter("@CustomerId", customerId)
+    };
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC DeleteCustomer @CustomerId", parameters);
         }
     }
 

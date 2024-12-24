@@ -31,7 +31,14 @@ namespace Data
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point
+                                                  // Add check constraint for TotalAmount (length before decimal point <= 3)
+            modelBuilder.Entity<Order>().HasCheckConstraint("CK_Order_TotalAmount_Length", "TotalAmount < 1000");
 
+            // Configure unique constraint for Email in Customer
+            modelBuilder.Entity<Customer>()
+                .HasIndex(c => c.Email)
+                .IsUnique()
+                .HasDatabaseName("IX_Customer_Email_Unique");
             // Configure one-to-many relationship between Order and Customer
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer) // Order has one Customer
