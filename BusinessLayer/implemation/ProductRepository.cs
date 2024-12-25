@@ -3,7 +3,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,31 +37,40 @@ namespace BusinessLayer.implemation
         // Get a product by ID
         public async Task<Product> GetProductByIdAsync(int productId)
         {
-            var parameters = new[]
-            {
-            new SqlParameter("@ProductId", productId)
-        };
-
-            var products = await _context.Products
-                .FromSqlRaw("EXEC GetProductById @ProductId", parameters)
-                .ToListAsync();
-
-            return products.FirstOrDefault(); // Returns null if not found
+            var sql = "EXEC GetProductById @ProductId = {0}";
+            Product product = _context.Products
+                                    .FromSqlRaw(sql, productId)
+                                    .AsEnumerable() // Move the query to the client side
+                                    .FirstOrDefault(); // Use synchronous method
+            return await Task.FromResult(product);
         }
+
+
 
         // Add a new product
         public async Task AddProductAsync(Product product)
         {
-            var parameters = new[]
+            try
             {
+                var parameters = new[]
+                {
             new SqlParameter("@ProductName", product.ProductName),
             new SqlParameter("@Price", product.Price),
             new SqlParameter("@CategoryId", product.CategoryId)
-        };
+                };
 
-            await _context.Database.ExecuteSqlRawAsync(
-                "EXEC AddProduct @ProductName, @Price, @CategoryId", parameters);
+                var result = await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC AddProduct @ProductName, @Price, @CategoryId",
+                    parameters
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
+            }
         }
+
 
         // Update an existing product
         public async Task UpdateProductAsync(Product product)

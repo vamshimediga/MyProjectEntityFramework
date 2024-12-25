@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
 namespace Data.Migrations
 {
     public partial class AddedStore_procedure : Migration
@@ -10,60 +8,75 @@ namespace Data.Migrations
         {
             // Stored Procedure: Get All Products
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE GetAllProducts
-                AS
+                IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetAllProducts')
                 BEGIN
-                    SELECT * FROM Products
+                    CREATE PROCEDURE GetAllProducts
+                    AS
+                    BEGIN
+                        SELECT * FROM Products
+                    END
                 END
             ");
 
             // Stored Procedure: Get Product By ID
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE GetProductById
-                    @ProductId INT
-                AS
+                IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetProductById')
                 BEGIN
-                    SELECT * FROM Products WHERE ProductId = @ProductId
+                    CREATE PROCEDURE GetProductById
+                        @ProductId INT
+                    AS
+                    BEGIN
+                        SELECT * FROM Products WHERE ProductId = @ProductId
+                    END
                 END
             ");
 
             // Stored Procedure: Add Product
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE AddProduct
-                    @ProductName NVARCHAR(100),
-                    @Price DECIMAL(18, 2),
-                    @CategoryId INT
-                AS
+                IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'AddProduct')
                 BEGIN
-                    INSERT INTO Products (ProductName, Price, CategoryId)
-                    VALUES (@ProductName, @Price, @CategoryId);
+                    CREATE PROCEDURE AddProduct
+                        @ProductName NVARCHAR(100),
+                        @Price DECIMAL(18, 2),
+                        @CategoryId INT
+                    AS
+                    BEGIN
+                        INSERT INTO Products (ProductName, Price, CategoryId)
+                        VALUES (@ProductName, @Price, @CategoryId);
+                    END
                 END
             ");
 
             // Stored Procedure: Update Product
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE UpdateProduct
-                    @ProductId INT,
-                    @ProductName NVARCHAR(100),
-                    @Price DECIMAL(18, 2),
-                    @CategoryId INT
-                AS
+                IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'UpdateProduct')
                 BEGIN
-                    UPDATE Products
-                    SET ProductName = @ProductName,
-                        Price = @Price,
-                        CategoryId = @CategoryId
-                    WHERE ProductId = @ProductId;
+                    CREATE PROCEDURE UpdateProduct
+                        @ProductId INT,
+                        @ProductName NVARCHAR(100),
+                        @Price DECIMAL(18, 2),
+                        @CategoryId INT
+                    AS
+                    BEGIN
+                        UPDATE Products
+                        SET ProductName = @ProductName,
+                            Price = @Price,
+                            CategoryId = @CategoryId
+                        WHERE ProductId = @ProductId;
+                    END
                 END
             ");
 
             // Stored Procedure: Delete Product
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE DeleteProduct
-                    @ProductId INT
-                AS
+                IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'DeleteProduct')
                 BEGIN
-                    DELETE FROM Products WHERE ProductId = @ProductId;
+                    CREATE PROCEDURE DeleteProduct
+                        @ProductId INT
+                    AS
+                    BEGIN
+                        DELETE FROM Products WHERE ProductId = @ProductId;
+                    END
                 END
             ");
         }

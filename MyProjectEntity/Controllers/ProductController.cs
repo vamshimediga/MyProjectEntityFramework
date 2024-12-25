@@ -25,25 +25,30 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            Product product = await _productRepository.GetProductByIdAsync(id);
+            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product); 
+            return View(productViewModel);
         }
 
         // GET: ProductController/Create
         public ActionResult Create()
         {
+            ProductViewModel product = new ProductViewModel();
             
-            return View();
+            return View(product);
         }
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ProductViewModel product)
         {
             try
             {
+                Product productdata=_mapper.Map<Product>(product);
+                _productRepository.AddProductAsync(productdata);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -53,18 +58,22 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Product product = await _productRepository.GetProductByIdAsync(id);
+            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
+            return View(productViewModel);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(ProductViewModel product)
         {
             try
             {
+               Product product1= _mapper.Map<Product>(product);
+                _productRepository.UpdateProductAsync(product1);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -74,18 +83,21 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Product product = await _productRepository.GetProductByIdAsync(id);
+            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(product);
+            return View(productViewModel);
         }
 
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                await _productRepository.DeleteProductAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
