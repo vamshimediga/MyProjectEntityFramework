@@ -41,22 +41,40 @@ namespace BusinessLayer.implemation
 
         public async Task InsertCategoryAsync(Category category)
         {
-             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[InsertCategory] @CategoryName = {0}, @Description = {1}",
-               category.CategoryName, category.Description);
+            // Create SqlParameters for the stored procedure parameters
+            var categoryNameParam = new SqlParameter("@CategoryName", category.CategoryName ?? (object)DBNull.Value);
+            var descriptionParam = new SqlParameter("@Description", category.Description ?? (object)DBNull.Value);
+
+            // Execute the stored procedure with parameters
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[InsertCategory] @CategoryName, @Description",
+                categoryNameParam, descriptionParam);
         }
+
 
         public async Task UpdateCategoryAsync(Category category)
         {
-             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[UpdateCategory] @CategoryId = {0}, @CategoryName = {1}, @Description = {2}",
-                category.CategoryId, category.CategoryName, category.Description);
+            // Create SqlParameters for the stored procedure parameters
+            SqlParameter categoryIdParam = new SqlParameter("@CategoryId", category.CategoryId);
+            SqlParameter categoryNameParam = new SqlParameter("@CategoryName", category.CategoryName ?? (object)DBNull.Value);
+            SqlParameter descriptionParam = new SqlParameter("@Description", category.Description ?? (object)DBNull.Value);
+
+            // Execute the stored procedure with parameters
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[UpdateCategory] @CategoryId, @CategoryName, @Description",
+                categoryIdParam, categoryNameParam, descriptionParam);
         }
 
         public async Task DeleteCategoryAsync(int categoryId)
         {
-             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC [dbo].[DeleteCategory] @CategoryId = {0}", categoryId);
+            // Create SqlParameter for the stored procedure parameter
+            SqlParameter categoryIdParam = new SqlParameter("@CategoryId", categoryId);
+
+            // Execute the stored procedure with the parameter
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[DeleteCategory] @CategoryId",
+                categoryIdParam);
         }
+
     }
 }
