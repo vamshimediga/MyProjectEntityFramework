@@ -28,6 +28,13 @@ namespace MyProjectEntity
 
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CategoryViewModel, Category>();   
+
+
+            CreateMap<Student, StudentViewModel>();
+            CreateMap<StudentViewModel, Student>();
+
+            CreateMap<Institute, InstituteViewModel>();
+            CreateMap<InstituteViewModel, Institute>();
         }
     }
 }

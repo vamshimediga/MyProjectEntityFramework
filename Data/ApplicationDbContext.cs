@@ -22,6 +22,9 @@ namespace Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Institute> Institutes { get; set; }
+        public DbSet<Student> Students { get; set; }
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +35,8 @@ namespace Data
             modelBuilder.Entity<Order>().ToTable(nameof(Order));
             modelBuilder.Entity<Category>().ToTable(nameof(Categories));
             modelBuilder.Entity<Product>().ToTable(nameof(Products));
+            modelBuilder.Entity<Institute>().ToTable(nameof(Institutes));
+            modelBuilder.Entity<Student>().ToTable(nameof(Students));
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point
@@ -60,6 +65,14 @@ namespace Data
           .WithMany(c => c.Products)
           .HasForeignKey(p => p.CategoryId)
           .OnDelete(DeleteBehavior.Cascade);  // Enable Cascade Delete
+
+            modelBuilder.Entity<Institute>()
+           .HasMany(i => i.Students)
+           .WithOne(s => s.Institute)
+           .HasForeignKey(s => s.InstituteId)
+           .OnDelete(DeleteBehavior.Cascade);  // Enable cascade delete
+
+            base.OnModelCreating(modelBuilder);
         }
 
     
