@@ -35,6 +35,13 @@ namespace MyProjectEntity
 
             CreateMap<Institute, InstituteViewModel>();
             CreateMap<InstituteViewModel, Institute>();
+
+
+            CreateMap<Author, AuthorViewModel>();
+            CreateMap<AuthorViewModel, Author>();
+
+            CreateMap<Book, BookViewModel>();
+            CreateMap<BookViewModel, Book>();   
         }
     }
 }

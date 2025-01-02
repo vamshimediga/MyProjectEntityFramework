@@ -168,6 +168,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Author.cs" />
+    <Compile Include="Book.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Course.cs" />

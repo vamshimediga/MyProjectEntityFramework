@@ -19,6 +19,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IInstitute,InstituteRepository>();
 builder.Services.AddScoped<IStudent, StudentRepository>();
+builder.Services.AddScoped<IAuthors, AuthorRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

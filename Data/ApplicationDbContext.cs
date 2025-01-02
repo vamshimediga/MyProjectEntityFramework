@@ -25,6 +25,9 @@ namespace Data
         public DbSet<Institute> Institutes { get; set; }
         public DbSet<Student> Students { get; set; }
 
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Book> Books { get; set; }
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +40,8 @@ namespace Data
             modelBuilder.Entity<Product>().ToTable(nameof(Products));
             modelBuilder.Entity<Institute>().ToTable(nameof(Institutes));
             modelBuilder.Entity<Student>().ToTable(nameof(Students));
+            modelBuilder.Entity<Book>().ToTable(nameof(Books));
+            modelBuilder.Entity<Author>().ToTable(nameof(Authors));
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point
@@ -71,6 +76,14 @@ namespace Data
            .WithOne(s => s.Institute)
            .HasForeignKey(s => s.InstituteId)
            .OnDelete(DeleteBehavior.Cascade);  // Enable cascade delete
+
+            modelBuilder.Entity<Book>()
+           .HasOne(b => b.Author)
+           .WithMany(a => a.Books)
+           .HasForeignKey(b => b.AuthorId)
+           .OnDelete(DeleteBehavior.Cascade); // Cascade delete
+
+
 
             base.OnModelCreating(modelBuilder);
         }
