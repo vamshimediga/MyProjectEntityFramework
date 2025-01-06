@@ -1,5 +1,6 @@
 using BusinessLayer;
 using BusinessLayer.implemation;
+using BusinessLayer.Implementation;
 using Data;
 using Interfaces;
 using Interfaces.@interface;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IInstitute,InstituteRepository>();
 builder.Services.AddScoped<IStudent, StudentRepository>();
 builder.Services.AddScoped<IAuthors, AuthorRepository>();
+builder.Services.AddScoped<IBook, BookRepositoryADODOTNET>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
