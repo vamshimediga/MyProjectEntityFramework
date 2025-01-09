@@ -41,7 +41,14 @@ namespace MyProjectEntity
             CreateMap<AuthorViewModel, Author>();
 
             CreateMap<Book, BookViewModel>();
-            CreateMap<BookViewModel, Book>();   
+            CreateMap<BookViewModel, Book>();
+
+            CreateMap<Department, DepartmentViewModel>();
+            CreateMap<DepartmentViewModel, Department>();
+
+
+            CreateMap<Employee, EmployeeViewModel>();
+            CreateMap<EmployeeViewModel, Employee>();
         }
     }
 }

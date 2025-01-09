@@ -22,7 +22,8 @@ builder.Services.AddScoped<IInstitute,InstituteRepository>();
 builder.Services.AddScoped<IStudent, StudentRepository>();
 builder.Services.AddScoped<IAuthors, AuthorRepository>();
 builder.Services.AddScoped<IBook, BookRepositoryADODOTNET>();
-
+builder.Services.AddScoped<IDepartment, DepartmentRepository>();
+builder.Services.AddScoped<IEmployees, EmployeeRepository>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

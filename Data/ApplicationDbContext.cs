@@ -28,6 +28,8 @@ namespace Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,7 +85,11 @@ namespace Data
            .HasForeignKey(b => b.AuthorId)
            .OnDelete(DeleteBehavior.Cascade); // Cascade delete
 
-
+            modelBuilder.Entity<Employee>()
+           .HasOne(e => e.Department)
+           .WithMany(d => d.Employees)
+           .HasForeignKey(e => e.DepartmentID)
+           .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
