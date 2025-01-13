@@ -17,7 +17,7 @@ namespace BusinessLayer
 
         Task<bool> Update(Employee employee);
 
-        Task<bool> Delete(Employee employee);
+        Task<bool> Delete(int id);
 
     }
 }

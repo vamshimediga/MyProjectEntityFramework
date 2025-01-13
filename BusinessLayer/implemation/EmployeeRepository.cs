@@ -40,10 +40,10 @@ namespace BusinessLayer.Implementation
         {
             var employeeIdParam = new SqlParameter("@EmployeeID", employeeId);
 
-            return await _context.Employees
+            return  _context.Employees
                 .FromSqlRaw("EXEC GetEmployeeById @EmployeeID", employeeIdParam)
-                .Include(e => e.Department) // Include navigation property if needed
-                .FirstOrDefaultAsync();
+                 .AsEnumerable() // This forces the query to execute and return the result in memory
+                .FirstOrDefault();
         }
 
         // Insert Employee
@@ -90,9 +90,9 @@ namespace BusinessLayer.Implementation
         }
 
         // Delete Employee
-        public async Task<bool> Delete(Employee employee)
+        public async Task<bool> Delete(int id)
         {
-            var employeeIdParam = new SqlParameter("@EmployeeID", employee.EmployeeID);
+            var employeeIdParam = new SqlParameter("@EmployeeID", id);
             var isDeletedParam = new SqlParameter("@IsDeleted", System.Data.SqlDbType.Bit)
             {
                 Direction = System.Data.ParameterDirection.Output

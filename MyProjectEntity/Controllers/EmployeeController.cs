@@ -26,24 +26,29 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: EmployeeController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            Employee employee = await _emp.GetEmployeeByIdAsync(id);
+            EmployeeViewModel employeeViewModel = _mapper.Map<EmployeeViewModel>(employee);
+            return View(employeeViewModel);
         }
 
         // GET: EmployeeController/Create
         public ActionResult Create()
         {
-            return View();
+            EmployeeViewModel employeeViewModel = new EmployeeViewModel();
+            return View(employeeViewModel);
         }
 
         // POST: EmployeeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(EmployeeViewModel employeeViewModel)
         {
             try
             {
+                Employee employee = _mapper.Map<Employee>(employeeViewModel);
+                bool issuccess = await _emp.Insert(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -53,18 +58,22 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: EmployeeController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Employee employee = await _emp.GetEmployeeByIdAsync(id);
+            EmployeeViewModel employeeView = _mapper.Map<EmployeeViewModel>(employee);
+            return View(employeeView);
         }
 
         // POST: EmployeeController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(EmployeeViewModel employeeViewModel)
         {
             try
             {
+                Employee employee = _mapper.Map<Employee>(employeeViewModel);
+                bool issuccess = await _emp.Update(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -74,18 +83,21 @@ namespace MyProjectEntity.Controllers
         }
 
         // GET: EmployeeController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Employee employee = await _emp.GetEmployeeByIdAsync(id);
+            EmployeeViewModel employeeView = _mapper.Map<EmployeeViewModel>(employee);
+            return View(employeeView);
         }
 
         // POST: EmployeeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                bool issuuess = await _emp.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
