@@ -1,0 +1,101 @@
+﻿@model IEnumerable<EntitiesViewModel.LeadViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeadID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeadID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.LeadID }) |
+                    <a href="#" data-action="details" data-id="@item.LeadID">Details</a> |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.LeadID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Lead Details</h5>
+                <button type="button" id="btnclose" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                <!-- The content will be injected here via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // When the "Details" link is clicked
+        $('a[data-action="details"]').on('click', function(e) {debugger
+            e.preventDefault(); // Prevent the default link behavior
+
+            var leadId = $(this).data('id'); // Get the LeadID from the data-id attribute
+
+            // Perform an AJAX request to fetch the details
+            $.ajax({
+                url: '/Admin/Lead/Details/' + leadId, // The URL of the Details action
+                type: 'GET',
+                success: function(response) {debugger
+                    // Inject the response (partial view) into the modal body
+                    $('#modal-body-content').html(response);
+                    // Show the modal
+                    $('#detailsModal').modal('show');
+                },
+                error: function() {
+                    alert('Error loading lead details');
+                }
+            });
+        });
+        // Close the modal manually (optional, if needed)
+        $('#btnclose').on('click', function () {debugger
+            $('#detailsModal').modal('hide');
+        });
+    });
+</script>

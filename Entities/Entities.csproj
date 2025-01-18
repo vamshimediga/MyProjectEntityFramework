@@ -172,11 +172,13 @@
     <Compile Include="Book.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Contact.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Institute.cs" />
+    <Compile Include="Lead.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

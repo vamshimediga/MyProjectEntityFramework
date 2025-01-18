@@ -24,6 +24,8 @@ builder.Services.AddScoped<IAuthors, AuthorRepository>();
 builder.Services.AddScoped<IBook, BookRepositoryADODOTNET>();
 builder.Services.AddScoped<IDepartment, DepartmentRepository>();
 builder.Services.AddScoped<IEmployees, EmployeeRepository>();
+builder.Services.AddScoped<ILead,LeadRepository>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -40,8 +42,15 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Route for area controllers
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+// Route for non-area controllers
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

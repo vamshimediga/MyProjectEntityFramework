@@ -30,6 +30,9 @@ namespace Data
 
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Lead> Leads { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +93,12 @@ namespace Data
            .WithMany(d => d.Employees)
            .HasForeignKey(e => e.DepartmentID)
            .OnDelete(DeleteBehavior.Cascade);
+
+             modelBuilder.Entity<Contact>()
+                .HasOne(c => c.Lead)              // A Contact has one Lead
+                .WithMany(l => l.Contacts)        // A Lead has many Contacts
+                .HasForeignKey(c => c.LeadID)     // Foreign Key in Contact
+                .OnDelete(DeleteBehavior.Cascade); // Cascade Delete
 
             base.OnModelCreating(modelBuilder);
         }

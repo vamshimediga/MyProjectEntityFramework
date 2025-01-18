@@ -49,6 +49,12 @@ namespace MyProjectEntity
 
             CreateMap<Employee, EmployeeViewModel>();
             CreateMap<EmployeeViewModel, Employee>();
+
+            CreateMap<Lead, LeadViewModel>();
+            CreateMap<LeadViewModel, Lead>();
+
+            CreateMap<Contact, ContactViewModel>();
+            CreateMap<ContactViewModel, Contact>();
         }
     }
 }
