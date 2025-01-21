@@ -1,8 +1,10 @@
 ﻿using Data;
 using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,9 +66,27 @@ namespace BusinessLayer.implemation
             return leads;
         }
 
-        public Task<bool> Update(Lead newLead)
+        public async Task<bool> Update(Lead lead)
         {
-            throw new NotImplementedException();
+            // Define the output parameter
+            var resultParameter = new SqlParameter("@Result", SqlDbType.Bit)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            // Execute the stored procedure
+           await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[Leads_Update] @LeadID, @FirstName, @LastName, @Email, @Result OUT",
+                new SqlParameter("@LeadID", lead.LeadID),
+                new SqlParameter("@FirstName", lead.FirstName),
+                new SqlParameter("@LastName", lead.LastName),
+                new SqlParameter("@Email", lead.Email),
+                resultParameter
+            );
+
+            // Retrieve the result from the output parameter
+            bool result = (bool)resultParameter.Value;
+            return result;
         }
     }
 }

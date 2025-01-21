@@ -55,25 +55,27 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: LeadController/Edit/5
-        public ActionResult Edit(int id)
+    
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Lead lead = await _lead.Lead(id);
+            LeadViewModel leadViewModel = _mapper.Map<LeadViewModel>(lead);
+            return PartialView("_Edit", leadViewModel);
         }
-
         // POST: LeadController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(LeadViewModel leadViewModel)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+           
+                    Lead lead = _mapper.Map<Lead>(leadViewModel);
+                    bool isSuccess = await _lead.Update(lead);
+           // return Json(new { success = true });
+            return RedirectToAction(nameof(Index));
         }
+
+
+
 
         // GET: LeadController/Delete/5
         public ActionResult Delete(int id)
