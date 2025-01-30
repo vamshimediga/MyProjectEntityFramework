@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer
 {
-    public interface ILead
+    public interface IContact
     {
-        Task<List<Lead>> leads();
+        Task<List<Contact>> GetContacts();
 
-        Task<Lead> Lead(int id);
+        Task<Contact> GetContactById(int id);   
 
-        Task<bool> Insert(Lead newLead);
+        Task<bool> Insert(Contact contact);
 
-        Task<bool> Update(Lead newLead);
+        Task<bool> Update(Contact contact);
 
         Task<bool> Delete(int id);
     }

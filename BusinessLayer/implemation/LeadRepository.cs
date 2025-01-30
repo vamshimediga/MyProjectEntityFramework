@@ -19,15 +19,47 @@ namespace BusinessLayer.implemation
         {
             _context = context;
         }
-        public Task<bool> Delete(Lead newLead)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var resultParameter = new SqlParameter("@Result", SqlDbType.Bit)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            // Execute the stored procedure
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[Leads_Delete] @LeadID, @Result OUTPUT",
+                new SqlParameter("@LeadID", id),
+                resultParameter
+            );
+
+            // Get the result from the output parameter
+            bool isSuccess = (bool)resultParameter.Value;
+            return isSuccess;
         }
 
-        public Task<bool> Insert(Lead newLead)
+        public async Task<bool> Insert(Lead lead)
         {
-            throw new NotImplementedException();
+            // Define the output parameter
+            var resultParameter = new SqlParameter("@Result", SqlDbType.Bit)
+            {
+                Direction = ParameterDirection.Output
+            };
+
+            // Execute the stored procedure
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[Leads_Insert] @FirstName, @LastName, @Email, @Result OUT",
+                new SqlParameter("@FirstName", lead.FirstName ?? (object)DBNull.Value),
+                new SqlParameter("@LastName", lead.LastName ?? (object)DBNull.Value),
+                new SqlParameter("@Email", lead.Email ?? (object)DBNull.Value),
+                resultParameter
+            );
+
+            // Retrieve the result from the output parameter
+            bool result = (bool)resultParameter.Value;
+            return result;
         }
+
 
         public async Task<Lead> Lead(int id)
         {

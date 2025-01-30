@@ -4,11 +4,20 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a  href="#"  id="CreateLeadForm">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -46,7 +55,8 @@
             <td>
                     <a href="#" data-action="edit" data-id="@item.LeadID">Edit</a> |
                     <a href="#" data-action="details" data-id="@item.LeadID">Details</a> |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.LeadID })
+                    <a href="#" data-action="Delete" data-id="@item.LeadID">Delete</a>
+                   
             </td>
         </tr>
 }
@@ -73,14 +83,15 @@
 <script>
     $(document).ready(function() {
         // When the "Details" link is clicked
-        $('a[data-action="details"]').on('click', function(e) {debugger
+        $('a[data-action="Delete"]').on('click', function (e) {
+            debugger
             e.preventDefault(); // Prevent the default link behavior
 
             var leadId = $(this).data('id'); // Get the LeadID from the data-id attribute
 
             // Perform an AJAX request to fetch the details
             $.ajax({
-                url: '/Admin/Lead/Details/' + leadId, // The URL of the Details action
+                url: '/Admin/Lead/Delete/' + leadId, // The URL of the Details action
                 type: 'GET',
                 success: function(response) {debugger
                     // Inject the response (partial view) into the modal body
@@ -89,6 +100,29 @@
                     $('#detailsModal').modal('show');
                 },
                 error: function() {
+                    alert('Error loading lead details');
+                }
+            });
+        });
+        // When the "Details" link is clicked
+        $('a[data-action="details"]').on('click', function (e) {
+            debugger
+            e.preventDefault(); // Prevent the default link behavior
+
+            var leadId = $(this).data('id'); // Get the LeadID from the data-id attribute
+
+            // Perform an AJAX request to fetch the details
+            $.ajax({
+                url: '/Admin/Lead/Details/' + leadId, // The URL of the Details action
+                type: 'GET',
+                success: function (response) {
+                    debugger
+                    // Inject the response (partial view) into the modal body
+                    $('#modal-body-content').html(response);
+                    // Show the modal
+                    $('#detailsModal').modal('show');
+                },
+                error: function () {
                     alert('Error loading lead details');
                 }
             });
@@ -140,8 +174,30 @@
                         alert('An error occurred while submitting the form.');
                     }
                 });
+        }); 
+          
+        $('#CreateLeadForm').click(function (event) {
+            debugger
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+             $.ajax({
+                url: '@Url.Action("Create", "Lead", new { area = "Admin" })', // URL to your controller action
+                type: 'Get',
+               
+                success: function (response) {
+                    debugger
+                    // Inject the response (Create form) into the modal body
+                    $('#modal-body-content').html(response);
+                    // Change modal title to "Create Lead"
+                    $('#detailsModalLabel').text('Create Lead');
+                    // Show the modal
+                    $('#detailsModal').modal('show');
+                },
+                error: function () {
+                    alert('An error occurred while submitting the form.');
+                }
             });
-       
+        });
+        
 
 
         // Close the modal manually (optional, if needed)

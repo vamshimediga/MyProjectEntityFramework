@@ -55,6 +55,12 @@ namespace MyProjectEntity
 
             CreateMap<Contact, ContactViewModel>();
             CreateMap<ContactViewModel, Contact>();
+
+            CreateMap<UserDomainModel, UserViewModel>();
+            CreateMap<UserViewModel, UserDomainModel>();
+
+            CreateMap<PostDomainModel, PostViewModel>();
+            CreateMap<PostViewModel, PostDomainModel>();
         }
     }
 }

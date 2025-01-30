@@ -71,27 +71,27 @@ namespace Data.Migrations
             migrationBuilder.Sql(@"
                 CREATE PROCEDURE [dbo].[Contacts_GetById]
                     @ContactID INT,
-                    @Result BIT OUTPUT
+                   
                 AS
                 BEGIN
                     SET NOCOUNT ON;
                     SELECT ContactID, ContactName, ContactPhone, LeadID
                     FROM [dbo].[Contacts]
                     WHERE ContactID = @ContactID;
-                    SET @Result = 1; -- Success
+                   
                 END
             ");
 
             // Create Contacts_Get Stored Procedure
             migrationBuilder.Sql(@"
                 CREATE PROCEDURE [dbo].[Contacts_Get]
-                    @Result BIT OUTPUT
+                   
                 AS
                 BEGIN
                     SET NOCOUNT ON;
                     SELECT ContactID, ContactName, ContactPhone, LeadID
                     FROM [dbo].[Contacts];
-                    SET @Result = 1; -- Success
+                    
                 END
             ");
         }

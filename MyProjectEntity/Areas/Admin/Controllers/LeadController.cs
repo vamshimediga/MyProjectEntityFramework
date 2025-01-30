@@ -36,16 +36,22 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         // GET: LeadController/Create
         public ActionResult Create()
         {
-            return View();
+            LeadViewModel leadViewModel = new LeadViewModel();
+            return PartialView("_Create", leadViewModel);
         }
 
         // POST: LeadController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(LeadViewModel leadViewModel)
         {
             try
             {
+                
+                Lead lead = _mapper.Map<Lead>(leadViewModel);
+                bool isSuccess = await _lead.Insert(lead);
+                // return Json(new { success = true });
+               //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -77,25 +83,45 @@ namespace MyProjectEntity.Areas.Admin.Controllers
 
 
 
-        // GET: LeadController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: LeadController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
+                Lead lead = await _lead.Lead(id);
+                LeadViewModel leadViewModel = _mapper.Map<LeadViewModel>(lead);
+                return PartialView("_Delete", leadViewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"An error occurred while fetching lead details for deletion: {ex.Message}";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+        }
+
+        // POST: LeadController/Delete/5
+        [HttpGet]
+     
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
             {
-                return View();
+                bool isSuccess = await _lead.Delete(id);
+
+                if (isSuccess)
+                {
+                    return Json(new { success = true, message = "Lead deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to delete the lead." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred while deleting the lead: {ex.Message}" });
             }
         }
+
+
     }
 }

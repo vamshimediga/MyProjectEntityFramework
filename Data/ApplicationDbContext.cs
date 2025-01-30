@@ -33,6 +33,10 @@ namespace Data
 
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<UserDomainModel>   users { get; set; }
+
+        public DbSet<PostDomainModel>  posts { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +51,9 @@ namespace Data
             modelBuilder.Entity<Student>().ToTable(nameof(Students));
             modelBuilder.Entity<Book>().ToTable(nameof(Books));
             modelBuilder.Entity<Author>().ToTable(nameof(Authors));
+            modelBuilder.Entity<UserDomainModel>().ToTable(nameof(users));
+            modelBuilder.Entity<PostDomainModel>().ToTable(nameof(posts));
+
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
                 .HasColumnType("decimal(18, 2)"); // Precision of 18 digits, scale of 2 digits after the decimal point
@@ -99,6 +106,21 @@ namespace Data
                 .WithMany(l => l.Contacts)        // A Lead has many Contacts
                 .HasForeignKey(c => c.LeadID)     // Foreign Key in Contact
                 .OnDelete(DeleteBehavior.Cascade); // Cascade Delete
+
+
+            modelBuilder.Entity<PostDomainModel>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // When a User is deleted, delete all their posts.
+
+            modelBuilder.Entity<UserDomainModel>()
+                .ToTable("Users")  // Map to SQL table
+                .HasKey(u => u.UserId); // Primary Key
+
+            modelBuilder.Entity<PostDomainModel>()
+                .ToTable("Posts")
+                .HasKey(p => p.PostId);
 
             base.OnModelCreating(modelBuilder);
         }
