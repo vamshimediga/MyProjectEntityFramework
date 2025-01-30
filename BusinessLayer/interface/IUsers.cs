@@ -17,6 +17,6 @@ namespace BusinessLayer
 
         Task<bool> update(UserDomainModel model);
 
-        Task<bool> delete(int id);
+        Task<int> delete(int id);
     }
 }
