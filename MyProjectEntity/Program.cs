@@ -11,23 +11,23 @@ using Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<ApplicationDbContext>(options =>  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>  options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<ICustomer, CustomerRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IInstitute,InstituteRepository>();
-builder.Services.AddScoped<IStudent, StudentRepository>();
-builder.Services.AddScoped<IAuthors, AuthorRepository>();
-builder.Services.AddScoped<IBook, BookRepositoryADODOTNET>();
-builder.Services.AddScoped<IDepartment, DepartmentRepository>();
-builder.Services.AddScoped<IEmployees, EmployeeRepository>();
-builder.Services.AddScoped<ILead,LeadRepository>();
-builder.Services.AddScoped<IContact,ContactRepository>();
-builder.Services.AddScoped<IUsers, UsersRepository>();
-
+//builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+//builder.Services.AddScoped<ICustomer, CustomerRepository>();
+//builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+//builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+//builder.Services.AddScoped<IInstitute,InstituteRepository>();
+//builder.Services.AddScoped<IStudent, StudentRepository>();
+//builder.Services.AddScoped<IAuthors, AuthorRepository>();
+//builder.Services.AddScoped<IBook, BookRepositoryADODOTNET>();
+//builder.Services.AddScoped<IDepartment, DepartmentRepository>();
+//builder.Services.AddScoped<IEmployees, EmployeeRepository>();
+//builder.Services.AddScoped<ILead,LeadRepository>();
+//builder.Services.AddScoped<IContact,ContactRepository>();
+//builder.Services.AddScoped<IUsers, UsersRepository>();
+builder.Services.DataServicesLayer(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
