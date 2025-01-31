@@ -5,6 +5,7 @@ using Data;
 using Interfaces;
 using Interfaces.@interface;
 using Microsoft.EntityFrameworkCore;
+using MyProject.APIEndpoints;
 using MyProjectEntity;
 
 using Repository;
@@ -44,6 +45,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+//app.MapUserEndpoints();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapUserEndpoints(); // Map Minimal API Endpoints
+});
 
 // Route for area controllers
 app.MapControllerRoute(
