@@ -180,6 +180,8 @@
     <Compile Include="Institute.cs" />
     <Compile Include="Lead.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="Passport.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="PostDomainModel.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

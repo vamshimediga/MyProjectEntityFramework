@@ -61,6 +61,12 @@ namespace MyProjectEntity
 
             CreateMap<PostDomainModel, PostViewModel>();
             CreateMap<PostViewModel, PostDomainModel>();
+
+            CreateMap<Person, PersonViewModel>();
+            CreateMap<PersonViewModel, Person>();
+
+            CreateMap<Passport, PassportViewModel>();
+            CreateMap<PassportViewModel, Passport>();
         }
     }
 }

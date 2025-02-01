@@ -37,6 +37,9 @@ namespace Data
         public DbSet<UserDomainModel>   users { get; set; }
 
         public DbSet<PostDomainModel>  posts { get; set; }
+
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Passport> Passports { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +56,8 @@ namespace Data
             modelBuilder.Entity<Author>().ToTable(nameof(Authors));
             modelBuilder.Entity<UserDomainModel>().ToTable(nameof(users));
             modelBuilder.Entity<PostDomainModel>().ToTable(nameof(posts));
+            modelBuilder.Entity<Person>().ToTable(nameof(Persons));
+            modelBuilder.Entity<Passport>().ToTable(nameof(Passports));
 
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
@@ -122,9 +127,14 @@ namespace Data
                 .ToTable("Posts")
                 .HasKey(p => p.PostId);
 
+            modelBuilder.Entity<Person>()
+                       .HasMany(p => p.Passports)         // A Person has many Passports
+                       .WithOne(p => p.Person)            // A Passport has one Person
+                       .HasForeignKey(p => p.PersonId)    // The foreign key is on Passport
+                       .OnDelete(DeleteBehavior.Cascade); // Set Cascade Delete
+
             base.OnModelCreating(modelBuilder);
         }
-
-    
+          
     }
 }

@@ -39,6 +39,8 @@ namespace BusinessLayer
             services.AddScoped<IContact, ContactRepository>();
             services.AddScoped<IUsers, UsersRepository>();
             services.AddScoped<IPosts, PostRepository>();
+            services.AddScoped<IPersons,PersonsRepository>();
+            services.AddScoped<IPassport,PassportRepository>();
             return services;
         }
     }

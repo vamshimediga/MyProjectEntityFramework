@@ -1,0 +1,47 @@
+﻿@model IEnumerable<EntitiesViewModel.PassportViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<p>
+    <a href="/Admin/Post/Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PassportId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassportNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassportId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassportNumber)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.PersonId)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.PassportId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PassportId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PassportId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
