@@ -17,7 +17,7 @@ namespace MyProject.APIEndpoints
 
             builder.MapGet("/api/users/{id}", async (int id, IUsers repository) =>
             {
-                var user = await repository.GetUsersByid(id);
+                UserDomainModel user = await repository.GetUsersByid(id);
                 return user != null ? Results.Ok(user) : Results.NotFound();
             });
 
@@ -30,7 +30,7 @@ namespace MyProject.APIEndpoints
             builder.MapPut("/api/users", async (UserDomainModel user, IUsers repository) =>
             {
                 var updated = await repository.update(user);
-                return updated ? Results.Ok() : Results.NotFound();
+                return updated ? Results.Ok(updated) : Results.NotFound();
             });
 
             builder.MapDelete("/api/users/{id}", async (int id, IUsers repository) =>

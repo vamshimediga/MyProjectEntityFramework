@@ -17,6 +17,7 @@ namespace Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Property
+
         public ICollection<PostDomainModel> Posts { get; set; }
     }
 }
