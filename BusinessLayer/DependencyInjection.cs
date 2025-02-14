@@ -41,6 +41,7 @@ namespace BusinessLayer
             services.AddScoped<IPosts, PostRepository>();
             services.AddScoped<IPersons,PersonsRepository>();
             services.AddScoped<IPassport,PassportRepository>();
+            services.AddScoped<ILawyer, LawyerRepository>();
             return services;
         }
     }

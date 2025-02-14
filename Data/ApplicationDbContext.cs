@@ -40,6 +40,9 @@ namespace Data
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<Passport> Passports { get; set; }
+
+        public DbSet<Lawyer> Lawyers { get; set; }
+        public DbSet<Client> Clients { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -133,6 +136,11 @@ namespace Data
                        .HasForeignKey(p => p.PersonId)    // The foreign key is on Passport
                        .OnDelete(DeleteBehavior.Cascade); // Set Cascade Delete
 
+            modelBuilder.Entity<Client>()
+           .HasOne(c => c.Lawyer)
+           .WithMany(l => l.Clients)
+           .HasForeignKey(c => c.LawyerID)
+           .OnDelete(DeleteBehavior.Cascade);  // ON DELETE CASCADE
             base.OnModelCreating(modelBuilder);
         }
           

@@ -67,6 +67,13 @@ namespace MyProjectEntity
 
             CreateMap<Passport, PassportViewModel>();
             CreateMap<PassportViewModel, Passport>();
+
+
+            CreateMap<Client, ClientViewModel>();
+            CreateMap<ClientViewModel, Client>();
+
+            CreateMap<Lawyer, LawyerViewModel>();
+            CreateMap<LawyerViewModel, Lawyer>();
         }
     }
 }
