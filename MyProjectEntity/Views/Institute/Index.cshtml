@@ -1,0 +1,145 @@
+﻿@model IEnumerable<EntitiesViewModel.InstituteViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a href="@Url.Action("Create", "Institute")" data-action="create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InstituteId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InstituteName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InstituteId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InstituteName)
+                </td>
+                <td>
+
+                    <a href="@Url.Action("Edit", "Institute", new { id = item.InstituteId, popUp = true })" data-action="Edit">Edit</a> |
+                    <a href="@Url.Action("Details", "Institute", new { id = item.InstituteId, popUp = true })" data-action="details">Details</a> |
+                    <a href="@Url.Action("Delete", "Institute", new { id = item.InstituteId, popUp = true })" data-action="delete">Delete</a>
+ |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal for Institute Details -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Institute Details</h5>
+                <button type="button" class="close" id="closeModal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Institute details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        // Handle the click event of the "Details" link
+        $(document).ready(function () {
+            $('a[data-action="details"]').click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#modal-body').html(data);
+                        $('#detailsModal').modal('show');
+                    },
+                    error: function () {
+                        alert('An error occurred while loading the details.');
+                    }
+                });
+            });
+            // Handle the click event of the "Create New" link
+            $('a[data-action="create"]').click(function (e) {debugger
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {debugger
+                        $('#modal-body').html(data); // Insert the partial view content into the modal body
+                        $('#detailsModal').modal('show'); // Show the modal
+                    },
+                    error: function () {
+                        alert('An error occurred while loading the create form.');
+                    }
+                });
+            });
+            $('a[data-action="Edit"]').click(function (e) {
+                debugger
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        debugger
+                        $('#modal-body').html(data); // Insert the partial view content into the modal body
+                        $('#detailsModal').modal('show'); // Show the modal
+                    },
+                    error: function () {
+                        alert('An error occurred while loading the create form.');
+                    }
+                });
+            });
+            $('a[data-action="delete"]').click(function (e) {
+                debugger
+                e.preventDefault();
+                var url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        debugger
+                        $('#modal-body').html(data); // Insert the partial view content into the modal body
+                        $('#detailsModal').modal('show'); // Show the modal
+                    },
+                    error: function () {
+                        alert('An error occurred while loading the create form.');
+                    }
+                });
+            });
+            // Close Modal on Close Button Click
+            $('#closeModal').click(function () {debugger
+                $('#detailsModal').modal('hide'); // Hide the modal
+            });
+
+            // Optional: Reset Modal Content on Close
+            $('#detailsModal').on('hidden.bs.modal', function () {debugger
+                console.log('Modal closed.');
+            });
+        });
+
+    </script>
+}

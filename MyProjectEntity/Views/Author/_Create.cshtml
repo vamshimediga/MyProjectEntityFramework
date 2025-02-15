@@ -1,0 +1,44 @@
+﻿@model EntitiesViewModel.AuthorViewModel
+
+<h4>Create Author</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @Html.AntiForgeryToken()  <!-- Anti-forgery token for security -->
+        <!-- Form to create an author using Html.BeginForm -->
+        @using (Html.BeginForm("Create", "Author", FormMethod.Post))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Hidden AuthorId field -->
+            <div class="form-group">
+                @Html.HiddenFor(model => model.AuthorId)  <!-- Hidden field for AuthorId -->
+                <span asp-validation-for="AuthorId" class="text-danger"></span>
+            </div>
+
+            <!-- Name field -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Submit button -->
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Back to List link -->
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <!-- Render validation scripts for client-side validation -->
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,46 @@
+﻿@model EntitiesViewModel.AuthorViewModel
+
+<h4>Edit Author</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <!-- Begin Form using Html.BeginForm -->
+        @using (Html.BeginForm("Edit", "Author", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()  <!-- Anti-forgery token for security -->
+            <!-- Validation summary for displaying model validation errors -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- AuthorId field (visible for editing) -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.AuthorId, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.AuthorId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Name field -->
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Submit button -->
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Back to List link -->
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <!-- Render validation scripts for client-side validation -->
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

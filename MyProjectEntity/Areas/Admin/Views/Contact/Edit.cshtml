@@ -1,0 +1,62 @@
+﻿@model EntitiesViewModel.ContactViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>ContactViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "Contact", new { area = "Admin" }, FormMethod.Post))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Contact ID Field -->
+            <div class="form-group">
+                <label for="ContactID" class="control-label">Contact ID</label>
+                @Html.TextBoxFor(m => m.ContactID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ContactID, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Contact Name Field -->
+            <div class="form-group">
+                <label for="ContactName" class="control-label">Contact Name</label>
+                @Html.TextBoxFor(m => m.ContactName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ContactName, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Contact Phone Field -->
+            <div class="form-group">
+                <label for="ContactPhone" class="control-label">Contact Phone</label>
+                @Html.TextBoxFor(m => m.ContactPhone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ContactPhone, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Lead ID Field -->
+            <div class="form-group">
+                <label for="LeadID" class="control-label">Lead ID</label>
+                @Html.TextBoxFor(m => m.LeadID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LeadID, "", new { @class = "text-danger" })
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-area="Admin">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

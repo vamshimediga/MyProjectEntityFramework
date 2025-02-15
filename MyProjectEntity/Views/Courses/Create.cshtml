@@ -1,0 +1,84 @@
+﻿@model EntitiesViewModel.CourseViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CourseViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @Html.AntiForgeryToken()
+        @using (Html.BeginForm("Create", "Course", FormMethod.Post, new { id = "createForm" }))
+        {
+            <div id="validationSummary" class="text-danger"></div>
+            <div class="form-group">
+                @Html.HiddenFor(m => m.CourseID, new { @class = "control-label" })
+                @Html.HiddenFor(m => m.CourseID)  <!-- This will render the CourseID as a hidden field -->
+                @Html.ValidationMessageFor(m => m.CourseID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.CourseName, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.CourseName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CourseName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CourseDescription, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.CourseDescription, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.CourseDescription, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Credits, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.Credits, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Credits, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CreatedDate, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.CreatedDate, new { @class = "form-control", @type = "datetime-local" })
+                @Html.ValidationMessageFor(m => m.CreatedDate, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ModifiedDate, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.ModifiedDate, new { @class = "form-control", @type = "datetime-local" })
+                @Html.ValidationMessageFor(m => m.ModifiedDate, "", new { @class = "text-danger", })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {debugger
+            $("#createForm").on("submit", function (e) {debugger
+                e.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("Create", "Courses")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {debugger
+                        if (response.success) {
+                            window.location.href = '@Url.Action("Index", "Courses")';
+                        } else {
+                            $("#validationSummary").html(response.errorMessage);
+                        }
+                    },
+                    error: function () {
+                        $("#validationSummary").html("An error occurred while processing your request.");
+                    }
+                });
+            });
+        });
+    </script>
+}

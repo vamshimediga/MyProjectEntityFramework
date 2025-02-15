@@ -11,80 +11,134 @@ namespace MyProjectEntity.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper; // Inject AutoMapper
-       
-        public CoursesController(ICourseRepository courseRepository,IMapper mapper)
+
+        public CoursesController(ICourseRepository courseRepository, IMapper mapper)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            List<Course> courses = (List<Course>)await _courseRepository.GetAllCoursesAsync();
-            List<CourseViewModel> viewModels = _mapper.Map<List<CourseViewModel>>(courses);
-            return View(viewModels);
-        }
-        // GET: CoursesController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCourses()
+        {
+            try
+            {
+                // Fetch all courses
+                List<Course> courses = (List<Course>)await _courseRepository.GetAllCoursesAsync();
+
+                // Map to ViewModel
+                List<CourseViewModel> viewModels = _mapper.Map<List<CourseViewModel>>(courses);
+
+                // Return data in the format DataTables expects
+                return Json(new { data = viewModels });
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                return Json(new { error = ex.Message });
+            }
+        }
+
+        // GET: CoursesController/Details/5
+        public async Task<ActionResult> Details(int id)
+        {
+            Course course = await _courseRepository.GetCourseByIdAsync(id);
+            CourseViewModel viewModel = _mapper.Map<CourseViewModel>(course);
+            return View(viewModel);
         }
 
         // GET: CoursesController/Create
         public ActionResult Create()
         {
-            return View();
+            CourseViewModel model = new CourseViewModel();
+            return View(model);
         }
 
         // POST: CoursesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<JsonResult> Create(CourseViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+
+                Course course = _mapper.Map<Course>(model);
+                await _courseRepository.AddCourseAsync(course);
+                return Json(new { success = true });
             }
-            catch
+            else
             {
-                return View();
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return Json(new { success = false, errorMessage = string.Join("<br/>", errors) });
             }
         }
 
+
         // GET: CoursesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Course course = await _courseRepository.GetCourseByIdAsync(id);
+            CourseViewModel courseView = _mapper.Map<CourseViewModel>(course);
+            return View(courseView);
         }
 
         // POST: CoursesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<JsonResult> Edit(CourseViewModel model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    // Map the CourseViewModel to the Course entity
+                    Course course = _mapper.Map<Course>(model);
+                    // Call the repository to update the course in the database
+                    await _courseRepository.UpdateCourseAsync(course);
+                    // Return success response if the update is successful
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    // If model validation fails, return validation errors
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return Json(new { success = false, errorMessage = string.Join("<br/>", errors) });
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                // Catch any unhandled exceptions and return a generic error message
+                return Json(new { success = false, errorMessage = "An error occurred while processing your request. Please try again." });
             }
         }
 
+
         // GET: CoursesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            Course course = await _courseRepository.GetCourseByIdAsync(id);
+            CourseViewModel courseView = _mapper.Map<CourseViewModel>(course);
+            return View(courseView);
+            
         }
 
         // POST: CoursesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+               await  _courseRepository.DeleteCourseAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

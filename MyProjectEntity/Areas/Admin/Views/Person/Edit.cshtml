@@ -1,0 +1,51 @@
+﻿@model EntitiesViewModel.PersonViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>PersonViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "Person", new { area = "Admin" }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PersonId, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.PersonId, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(model => model.PersonId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Active, new { @class = "control-label" })
+                @{
+                    // Build the list of passport options, with the default '-- Select Passport --' option having value "0".
+                    var passportList = new List<SelectListItem>() { new SelectListItem() { Text = "-- Select Passport --", Value = "0", Selected = true } };
+                    passportList.AddRange(Model.Passports.Select(p => new SelectListItem() { Text = p.PassportNumber, Value = p.PassportId.ToString() }));
+                }
+                @Html.DropDownListFor(model => model.Active, passportList, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-area="Admin">Back to List</a>
+</div>
+
+
