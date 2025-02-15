@@ -1,0 +1,59 @@
+﻿@model EntitiesViewModel.ClientViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ClientViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Create", "Client", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="text-danger">
+                @Html.ValidationSummary(true)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ClientID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ClientID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ClientID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LawyerID, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.LawyerID, new SelectList(Model.Lawyers, "LawyerID", "Name"), "-- Please Select --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LawyerID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CaseType, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.CaseType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CaseType, "", new { @class = "text-danger" })
+            </div>
+
+           @*  <!-- File Upload Field -->
+            <div class="form-group">
+                @Html.Label("Upload Document", new { @class = "control-label" })
+                <input type="file" name="file" class="form-control" />
+            </div> *@
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
