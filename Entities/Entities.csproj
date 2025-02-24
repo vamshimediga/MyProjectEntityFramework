@@ -173,6 +173,8 @@
     <Compile Include="Category.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="CoalMine.cs" />
+    <Compile Include="CoalProduction.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="Customer.cs" />
