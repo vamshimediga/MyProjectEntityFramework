@@ -1,0 +1,53 @@
+﻿@model IEnumerable<EntitiesViewModel.ApartmentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<a href="@Url.Action("Create", "Apartments", new { area = "Admin" })">Create New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApartmentID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalUnits)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApartmentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApartmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalUnits)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.ApartmentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ApartmentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ApartmentID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

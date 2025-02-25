@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221095854_Coalmine-CoalPeoduction")]
+    partial class CoalmineCoalPeoduction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,28 +24,6 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Entities.Apartment", b =>
-                {
-                    b.Property<int>("ApartmentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApartmentID"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ApartmentName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalUnits")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApartmentID");
-
-                    b.ToTable("Apartments");
-                });
 
             modelBuilder.Entity("Entities.Author", b =>
                 {
@@ -442,30 +423,6 @@ namespace Data.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
-            modelBuilder.Entity("Entities.Resident", b =>
-                {
-                    b.Property<int>("ResidentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResidentID"));
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApartmentID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ResidentID");
-
-                    b.HasIndex("ApartmentID");
-
-                    b.ToTable("Residents");
-                });
-
             modelBuilder.Entity("Entities.Student", b =>
                 {
                     b.Property<int>("StudentId")
@@ -636,17 +593,6 @@ namespace Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Entities.Resident", b =>
-                {
-                    b.HasOne("Entities.Apartment", "Apartment")
-                        .WithMany("Residents")
-                        .HasForeignKey("ApartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Apartment");
-                });
-
             modelBuilder.Entity("Entities.Student", b =>
                 {
                     b.HasOne("Entities.Institute", "Institute")
@@ -656,11 +602,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Institute");
-                });
-
-            modelBuilder.Entity("Entities.Apartment", b =>
-                {
-                    b.Navigation("Residents");
                 });
 
             modelBuilder.Entity("Entities.Author", b =>

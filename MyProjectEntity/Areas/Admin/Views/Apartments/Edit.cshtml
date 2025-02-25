@@ -1,0 +1,52 @@
+﻿@model EntitiesViewModel.ApartmentViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>ApartmentViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "Apartments", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApartmentID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ApartmentID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ApartmentID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApartmentName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ApartmentName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ApartmentName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalUnits, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.TotalUnits, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TotalUnits, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

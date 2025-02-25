@@ -1,0 +1,55 @@
+﻿@model IEnumerable<EntitiesViewModel.CoalProductionViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<a href="@Url.Action("Create", "CoalProduction", new { area = "Admin" })">Create New</a>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalProductionInTons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MineID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalProductionInTons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MineID)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductionID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductionID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductionID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

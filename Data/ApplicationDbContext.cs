@@ -43,6 +43,13 @@ namespace Data
 
         public DbSet<Lawyer> Lawyers { get; set; }
         public DbSet<Client> Clients { get; set; }
+
+
+        public DbSet<CoalMine> CoalMines { get; set; }
+        public DbSet<CoalProduction> CoalProductions { get; set; }
+
+        public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<Resident> Residents { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -141,6 +148,20 @@ namespace Data
            .WithMany(l => l.Clients)
            .HasForeignKey(c => c.LawyerID)
            .OnDelete(DeleteBehavior.Cascade);  // ON DELETE CASCADE
+
+
+            modelBuilder.Entity<CoalProduction>()
+           .HasOne(cp => cp.CoalMine)         // CoalProduction has one related CoalMine
+           .WithMany(cm => cm.CoalProductions) // CoalMine can have multiple CoalProductions
+           .HasForeignKey(cp => cp.MineID)    // Foreign key in CoalProduction refers to MineID in CoalMine
+           .OnDelete(DeleteBehavior.Cascade); // When a CoalMine is deleted, its related CoalProductions are also deleted
+
+
+            modelBuilder.Entity<Resident>()
+            .HasOne(r => r.Apartment)
+            .WithMany(a => a.Residents)
+            .HasForeignKey(r => r.ApartmentID);
+
             base.OnModelCreating(modelBuilder);
         }
           

@@ -1,0 +1,54 @@
+﻿@model EntitiesViewModel.CoalProductionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>CoalProductionViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Create", "CoalProduction", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="text-danger">
+                @Html.ValidationSummary(true)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductionID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ProductionID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductionID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductionYear, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ProductionYear, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductionYear, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalProductionInTons, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.TotalProductionInTons, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TotalProductionInTons, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MineID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.MineID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MineID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

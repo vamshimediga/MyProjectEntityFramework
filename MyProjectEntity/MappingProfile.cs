@@ -74,6 +74,19 @@ namespace MyProjectEntity
 
             CreateMap<Lawyer, LawyerViewModel>();
             CreateMap<LawyerViewModel, Lawyer>();
+
+            CreateMap<CoalProduction, CoalProductionViewModel>();
+            CreateMap<CoalProductionViewModel, CoalProduction>();
+
+            CreateMap<CoalMine, CoalMineViewModel>();
+            CreateMap<CoalMineViewModel, CoalMine>();
+
+
+            CreateMap<Apartment, ApartmentViewModel>();
+            CreateMap<ApartmentViewModel, Apartment>(); 
+
+            CreateMap<Resident, ResidentViewModel>();
+            CreateMap<ResidentViewModel, Resident>();
         }
     }
 }
