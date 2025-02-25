@@ -80,6 +80,13 @@ namespace MyProjectEntity
 
             CreateMap<CoalMine, CoalMineViewModel>();
             CreateMap<CoalMineViewModel, CoalMine>();
+
+
+            CreateMap<Apartment, ApartmentViewModel>();
+            CreateMap<ApartmentViewModel, Apartment>(); 
+
+            CreateMap<Resident, ResidentViewModel>();
+            CreateMap<ResidentViewModel, Resident>();
         }
     }
 }

@@ -47,6 +47,9 @@ namespace Data
 
         public DbSet<CoalMine> CoalMines { get; set; }
         public DbSet<CoalProduction> CoalProductions { get; set; }
+
+        public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<Resident> Residents { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -152,6 +155,12 @@ namespace Data
            .WithMany(cm => cm.CoalProductions) // CoalMine can have multiple CoalProductions
            .HasForeignKey(cp => cp.MineID)    // Foreign key in CoalProduction refers to MineID in CoalMine
            .OnDelete(DeleteBehavior.Cascade); // When a CoalMine is deleted, its related CoalProductions are also deleted
+
+
+            modelBuilder.Entity<Resident>()
+            .HasOne(r => r.Apartment)
+            .WithMany(a => a.Residents)
+            .HasForeignKey(r => r.ApartmentID);
 
             base.OnModelCreating(modelBuilder);
         }

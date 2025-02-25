@@ -44,6 +44,7 @@ namespace BusinessLayer
             services.AddScoped<ILawyer, LawyerRepository>();
             services.AddScoped<IClient, ClientRepository>();
             services.AddScoped<ICoalProduction, CoalProductionRepository>();
+            services.AddScoped<IApartment, ApartmentRepository>();
 
             return services;
         }
