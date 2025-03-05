@@ -39,7 +39,12 @@
                 @Html.TextBoxFor(model => model.TotalUnits, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.TotalUnits, "", new { @class = "text-danger" })
             </div>
-
+            <div class="form-group">
+                @Html.LabelFor(model => model.ResidentId, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.ResidentId, new SelectList(Model.Residents, "ResidentID", "Name"), "--Please Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ResidentId, "", new { @class = "text-danger" })
+            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

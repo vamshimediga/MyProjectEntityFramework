@@ -12,7 +12,7 @@ namespace Entities
         public string ApartmentName { get; set; }
         public string Address { get; set; }
         public int TotalUnits { get; set; }
-
+        public int ResidentId { get; set; } 
         // Navigation Property: One Apartment can have many Residents
         public ICollection<Resident> Residents { get; set; }
     }

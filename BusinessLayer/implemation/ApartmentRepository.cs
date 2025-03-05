@@ -50,11 +50,12 @@ namespace BusinessLayer.implemation
             var apartmentNameParam = new SqlParameter("@ApartmentName", SqlDbType.NVarChar) { Value = apartment.ApartmentName };
             var addressParam = new SqlParameter("@Address", SqlDbType.NVarChar) { Value = apartment.Address };
             var totalUnitsParam = new SqlParameter("@TotalUnits", SqlDbType.Int) { Value = apartment.TotalUnits };
+            var residentId = new SqlParameter("@ResidentId", SqlDbType.Int) { Value = apartment.ResidentId };
             var outputIdParam = new SqlParameter("@ApartmentID", SqlDbType.Int) { Direction = ParameterDirection.Output };
 
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC InsertApartment @ApartmentName, @Address, @TotalUnits; SET @ApartmentID = SCOPE_IDENTITY();",
-                apartmentNameParam, addressParam, totalUnitsParam, outputIdParam
+                "EXEC InsertApartment @ApartmentName, @Address, @TotalUnits,@ResidentId; SET @ApartmentID = SCOPE_IDENTITY();",
+                apartmentNameParam, addressParam, totalUnitsParam, residentId,outputIdParam
             );
             // Returns affected rows, but for identity, you'd need to modify the stored procedure
         }
@@ -63,8 +64,8 @@ namespace BusinessLayer.implemation
         public async Task UpdateApartmentAsync(Apartment apartment)
         {
             var rowsAffected = await _context.Database
-                .ExecuteSqlRawAsync("EXEC UpdateApartment @p0, @p1, @p2, @p3",
-                    apartment.ApartmentID, apartment.ApartmentName, apartment.Address, apartment.TotalUnits);
+                .ExecuteSqlRawAsync("EXEC UpdateApartment @p0, @p1, @p2, @p3,@p4",
+                    apartment.ApartmentID, apartment.ApartmentName, apartment.Address, apartment.TotalUnits, apartment.ResidentId);
 
          //   return rowsAffected > 0;
         }
