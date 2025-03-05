@@ -19,6 +19,6 @@ namespace EntitiesViewModel
 
         // Navigation Property (Many-to-One)
         public LawyerViewModel Lawyer { get; set; }
-        public List<LawyerViewModel> Lawyers { get; set; }
+        public List<LawyerViewModel> Lawyers { get; set; }= new List<LawyerViewModel>();
     }
 }

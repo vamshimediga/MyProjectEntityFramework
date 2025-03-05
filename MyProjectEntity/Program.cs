@@ -57,7 +57,7 @@ app.UseRouting();
 // Enable Authentication & Authorization (Order matters)
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapControllers(); // ? Enable attribute-based routing
 // Map Minimal API Endpoints
 app.UseEndpoints(endpoints =>
 {

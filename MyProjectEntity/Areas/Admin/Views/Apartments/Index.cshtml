@@ -6,6 +6,12 @@
 }
 
 <h1>Index</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
 
 <a href="@Url.Action("Create", "Apartments", new { area = "Admin" })">Create New</a>
 
@@ -23,6 +29,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalUnits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResidentId)
             </th>
             <th></th>
         </tr>
@@ -42,6 +51,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalUnits)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResidentId)
+                </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.ApartmentID }) |
                     @Html.ActionLink("Details", "Details", new { id = item.ApartmentID }) |

@@ -13,13 +13,17 @@ namespace MyProjectEntity.Areas.Admin.Controllers
     {
         private readonly IApartment _apartments;
         private readonly IMapper _mapper;
-      public  ApartmentsController(IApartment apartment, IMapper mapper)
+        private readonly IResident _resident;
+      public  ApartmentsController(IApartment apartment, IMapper mapper,IResident resident)
         {
 
             _apartments = apartment;
-            _mapper = mapper;   
+            _mapper = mapper;  
+            _resident = resident;
 
         }
+        [HttpGet]
+        [Route("Admin/ApartmentsList")] // Explicitly define full route
         // GET: ApartmentsController
         public async Task<ActionResult> Index()
         {
@@ -37,9 +41,13 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: ApartmentsController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             ApartmentViewModel apartmentViewModel = new ApartmentViewModel();
+            List<Resident> residents = new List<Resident>();
+            residents = await _resident.GetResidentsAsync();
+            List<ResidentViewModel> residentViewModels = _mapper.Map<List<ResidentViewModel>>(residents);
+            apartmentViewModel.Residents = residentViewModels;
             return View(apartmentViewModel);
         }
 
@@ -50,13 +58,27 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         {
             try
             {
-                Apartment apartment = _mapper.Map<Apartment>(apartmentViewModel);
-                await _apartments.InsertApartmentAsync(apartment);
+                if (!ModelState.IsValid) // Ensure model validation
+                {
+                    List<Resident> residents = new List<Resident>();
+                    residents = await _resident.GetResidentsAsync();
+                    List<ResidentViewModel> residentViewModels = _mapper.Map<List<ResidentViewModel>>(residents);
+                    apartmentViewModel.Residents = residentViewModels;
+                    return View(apartmentViewModel); // Return the view with validation errors
+                }
+                else
+                {
+
+                    Apartment apartment = _mapper.Map<Apartment>(apartmentViewModel);
+                    await _apartments.InsertApartmentAsync(apartment);
+                    TempData["SuccessMessage"] = "Apartment created successfully!";
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "An error occurred while saving the apartment.");
+                return View(apartmentViewModel);
             }
         }
 
@@ -64,7 +86,11 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             Apartment apartment = await _apartments.GetApartmentByIdAsync(id);
+            List<Resident> residents = new List<Resident>();
+            residents = await _resident.GetResidentsAsync();
+            ICollection<ResidentViewModel> residentViewModels = _mapper.Map<List<ResidentViewModel>>(residents);
             ApartmentViewModel apartmentViewModel = _mapper.Map<ApartmentViewModel>(apartment);
+            apartmentViewModel.Residents = residentViewModels;
             return View(apartmentViewModel);
         }
 
