@@ -1,0 +1,53 @@
+﻿@model EntitiesViewModel.ActivityViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ActivityViewModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ActivityID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActivityID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ActivityType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActivityType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ActivityDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ActivityDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OpportunityID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OpportunityID)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Activity", FormMethod.Post))
+    {
+        @Html.HiddenFor(item => item.ActivityID)
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    }
+    @Html.ActionLink("Back to List", "Index")
+</div>

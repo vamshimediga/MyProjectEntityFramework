@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Azure;
+using Data;
 using Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -49,14 +50,30 @@ namespace BusinessLayer.implemation
 
         }
 
-        public Task Insert(Resident resident)
+        public async Task Insert(Resident resident)
         {
-            throw new NotImplementedException();
+            var nameParam = new SqlParameter("@Name", resident.Name);
+            var ageParam = new SqlParameter("@Age", resident.Age);
+            var apartmentParam = new SqlParameter("@ApartmentID", resident.ApartmentID);
+           
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[InsertResident] @Name, @Age, @ApartmentID",
+                nameParam, ageParam, apartmentParam);
+
+            //return (int)residentIdParam.Value; // Retrieve the new ResidentID
         }
 
-        public Task Update(Resident resident)
+        public async Task Update(Resident resident)
         {
-            throw new NotImplementedException();
+            var residentIdParam = new SqlParameter("@ResidentID", resident.ResidentID);
+            var nameParam = new SqlParameter("@Name", resident.Name);
+            var ageParam = new SqlParameter("@Age", resident.Age);
+            var apartmentParam = new SqlParameter("@ApartmentID", resident.ApartmentID);
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC [dbo].[UpdateResident] @ResidentID, @Name, @Age, @ApartmentID",
+                residentIdParam, nameParam, ageParam, apartmentParam);
         }
     }
 }

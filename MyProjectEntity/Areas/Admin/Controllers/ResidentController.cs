@@ -34,18 +34,21 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: ResidentController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            ResidentViewModel viewModel = new ResidentViewModel();  
+            return View(viewModel);
         }
 
         // POST: ResidentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(ResidentViewModel viewModel)
         {
             try
             {
+                Resident resident = _mapper.Map<Resident>(viewModel);
+               await _resident.Insert(resident);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -55,18 +58,22 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: ResidentController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            Resident resident = await _resident.GetResidentByIdAsync(id);
+            ResidentViewModel residentViewModel = _mapper.Map<ResidentViewModel>(resident);
+            return View(residentViewModel);
         }
 
         // POST: ResidentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, ResidentViewModel viewModel)
         {
             try
             {
+                Resident resident = _mapper.Map<Resident>(viewModel);
+                await _resident.Update(resident);
                 return RedirectToAction(nameof(Index));
             }
             catch
