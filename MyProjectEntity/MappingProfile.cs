@@ -87,6 +87,13 @@ namespace MyProjectEntity
 
             CreateMap<Resident, ResidentViewModel>();
             CreateMap<ResidentViewModel, Resident>();
+
+
+            CreateMap<Activity, ActivityViewModel>();
+            CreateMap<ActivityViewModel, Activity>();
+
+            CreateMap<Opportunity, OpportunityViewModel>();
+            CreateMap<OpportunityViewModel, Opportunity>();
         }
     }
 }

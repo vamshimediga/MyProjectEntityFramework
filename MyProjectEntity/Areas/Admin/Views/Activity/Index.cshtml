@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EntitiesViewModel.ActivityViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+@Html.ActionLink("Create New", "Create", "Activity", new { area = "Admin" }, null)
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpportunityID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opportunity.OpportunityName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpportunityID)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opportunity.OpportunityName)
+                </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.ActivityID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ActivityID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ActivityID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

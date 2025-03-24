@@ -168,6 +168,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity.cs" />
     <Compile Include="Apartment.cs" />
     <Compile Include="Author.cs" />
     <Compile Include="Book.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Institute.cs" />
     <Compile Include="Lawyer.cs" />
     <Compile Include="Lead.cs" />
+    <Compile Include="Opportunity.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Passport.cs" />
     <Compile Include="Person.cs" />

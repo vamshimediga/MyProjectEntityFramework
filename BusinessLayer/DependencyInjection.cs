@@ -46,6 +46,7 @@ namespace BusinessLayer
             services.AddScoped<ICoalProduction, CoalProductionRepository>();
             services.AddScoped<IApartment, ApartmentRepository>();
             services.AddScoped<IResident, ResidentRepository>();
+            services.AddScoped<IActivity, ActivityRepository>();
             return services;
         }
     }

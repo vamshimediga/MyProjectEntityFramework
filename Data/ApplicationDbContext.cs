@@ -50,6 +50,9 @@ namespace Data
 
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Resident> Residents { get; set; }
+
+        public DbSet<Opportunity> Opportunities { get; set; }
+        public DbSet<Activity> Activities { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -161,6 +164,13 @@ namespace Data
             .HasOne(r => r.Apartment)
             .WithMany(a => a.Residents)
             .HasForeignKey(r => r.ApartmentID);
+
+
+            modelBuilder.Entity<Activity>()
+                .HasOne(a => a.Opportunity)
+                .WithMany(o => o.Activities)
+                .HasForeignKey(a => a.OpportunityID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

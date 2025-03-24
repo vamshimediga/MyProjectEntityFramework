@@ -1,0 +1,55 @@
+﻿@model EntitiesViewModel.ActivityViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ActivityViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Create", "Activity", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.ActivityID)
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActivityType, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ActivityType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityType, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActivityDate, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ActivityDate, new { @class = "form-control", type = "date" })
+                @Html.ValidationMessageFor(model => model.ActivityDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpportunityID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.OpportunityID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OpportunityID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

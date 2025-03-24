@@ -1,0 +1,57 @@
+﻿@model EntitiesViewModel.ActivityViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>ActivityViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "Activity", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActivityID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ActivityID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActivityType, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ActivityType, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityType, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ActivityDate, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.ActivityDate, new { @class = "form-control", type = "datetime" })
+                @Html.ValidationMessageFor(model => model.ActivityDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpportunityID, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.OpportunityID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OpportunityID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
