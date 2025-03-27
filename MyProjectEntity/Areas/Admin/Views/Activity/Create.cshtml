@@ -21,25 +21,25 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.ActivityType, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.ActivityType, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.ActivityType, new { @class = "form-control",id = "ActivityType" })
                 @Html.ValidationMessageFor(model => model.ActivityType, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Description, new { @class = "form-control", id = "Description" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.ActivityDate, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.ActivityDate, new { @class = "form-control", type = "date" })
+                @Html.TextBoxFor(model => model.ActivityDate, new { @class = "form-control", type = "date",  })
                 @Html.ValidationMessageFor(model => model.ActivityDate, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.OpportunityID, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.OpportunityID, new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.OpportunityID, new SelectList(Model.opportunities, "OpportunityID", "OpportunityName"), "--Please Select --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.OpportunityID, "", new { @class = "text-danger" })
             </div>
 
@@ -53,3 +53,31 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+<!-- Toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#ActivityType").on("input", function () {debugger
+            var inputVal = $(this).val();
+            if (/[^a-zA-Z ]/.test(inputVal)) {
+                toastr.error("Only alphabets are allowed!", "Invalid Input");
+                $(this).val(inputVal.replace(/[^a-zA-Z ]/g, ""));
+            }
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("Description").addEventListener("input", function () {debugger
+            let inputVal = this.value;
+            if (/[^a-zA-Z ]/.test(inputVal)) { // Allow only alphabets & spaces
+                toastr.error("Only alphabets are allowed!", "Invalid Input");
+                this.value = inputVal.replace(/[^a-zA-Z ]/g, ""); // Remove invalid characters
+            }
+        });
+    });
+</script>

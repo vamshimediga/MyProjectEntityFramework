@@ -1,0 +1,58 @@
+﻿@model EntitiesViewModel.OpportunityViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>OpportunityViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Create", "Opportunity", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpportunityID, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.OpportunityID, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OpportunityID, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OpportunityName, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.OpportunityName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OpportunityName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EstimatedValue, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.EstimatedValue, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EstimatedValue, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CloseDate, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.CloseDate, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CloseDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Stage, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Stage, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Stage, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -13,9 +13,11 @@ namespace MyProjectEntity.Areas.Admin.Controllers
     {
         public readonly IActivity _activity;
         public readonly IMapper _mapper;
-        public ActivityController(IActivity activity,IMapper mapper) {
+        public readonly IOpportunity _opportunity;
+        public ActivityController(IActivity activity,IMapper mapper,IOpportunity opportunity) {
            _activity = activity;
            _mapper = mapper;
+            _opportunity = opportunity;
 
         }
         // GET: ActivityController
@@ -40,6 +42,8 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         public async Task<ActionResult> Create()
         {
             ActivityViewModel activityViewModel = new ActivityViewModel();
+            List<Opportunity> opportunities = await _opportunity.GetAllOpportunitiesAsync();
+            activityViewModel.opportunities = _mapper.Map<List<OpportunityViewModel>>(opportunities);
             return View(activityViewModel);
         }
 
@@ -65,7 +69,8 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         {
             Activity activity = await _activity.GetActivityByIdAsync(id);
             ActivityViewModel activityViewModel = _mapper.Map<ActivityViewModel>(activity);
-           
+            List<Opportunity> opportunities = await _opportunity.GetAllOpportunitiesAsync();
+            activityViewModel.opportunities = _mapper.Map<List<OpportunityViewModel>>(opportunities);
             return View(activityViewModel);
         }
 
