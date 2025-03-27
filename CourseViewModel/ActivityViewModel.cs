@@ -24,5 +24,7 @@ namespace EntitiesViewModel
 
 
          public OpportunityViewModel Opportunity { get; set; }
+
+        public List<OpportunityViewModel> opportunities { get; set; }
     }
 }

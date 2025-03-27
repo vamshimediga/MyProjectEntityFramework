@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Opportunities";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Opportunities</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@Html.AntiForgeryToken()
+<table id="opportunitiesTable" class="table">
+    <thead>
+        <tr>
+            <th>Opportunity ID</th>
+            <th>Opportunity Name</th>
+            <th>Estimated Value</th>
+            <th>Close Date</th>
+            <th>Stage</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be populated by jQuery -->
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        loadOpportunities();
+    });
+
+    function loadOpportunities() {
+        $.ajax({
+            url: '/Admin/Opportunity/GetOpportunities',  // Ensure the correct controller route
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var tableBody = $("#opportunitiesTable tbody");
+                tableBody.empty(); // Clear existing rows
+
+                $.each(data, function (index, item) {
+                    var row = `<tr>
+                                <td>${item.opportunityID}</td>
+                                <td>${item.opportunityName}</td>
+                                <td>${item.estimatedValue}</td>
+                                <td>${item.closeDate}</td>
+                                <td>${item.stage}</td>
+                            <td>
+                                <a href="#" class="opportunity-action" data-id="${item.opportunityID}" data-action="edit">Edit</a> |
+                                <a href="#" class="opportunity-action" data-id="${item.opportunityID}" data-action="details">Details</a> |
+                                <a href="#" class="opportunity-action delete-opportunity" data-id="${item.opportunityID}" data-action="delete">Delete</a>
+                            </td>
+                        </tr>`;
+                    tableBody.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading opportunities:", error);
+            }
+        });
+    }
+
+    // ✅ Fix: Use event delegation
+    $(document).on("click", ".opportunity-action", function (e) {
+        e.preventDefault();
+        var opportunityID = $(this).data("id");
+        var action = $(this).data("action");
+        var url = "";
+
+        if (action === "edit") {
+            url = "/Admin/Opportunity/Edit/" + opportunityID;
+            window.location.href = url;
+        } else if (action === "details") {
+            url = "/Admin/Opportunity/Details/" + opportunityID;
+            window.location.href = url;
+        } else if (action === "delete") {
+            if (!confirm("Are you sure you want to delete this opportunity?")) {
+                return;
+            }
+
+            $.ajax({
+                url: "/Admin/Opportunity/Delete/" + opportunityID,
+                type: "POST",
+                data: { __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() }, // CSRF Token
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        loadOpportunities(); // Reload table after deletion
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+    });
+
+</script>

@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tabs Example with Partial Views</h2>
+
+<!-- Bootstrap Nav Tabs -->
+<ul class="nav nav-tabs" id="myTabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="tab1" href="#" data-url="@Url.Action("LoadTab1", "Tabs", new { area = "Admin" })">Tab 1</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tab2" href="#" data-url="@Url.Action("LoadTab2", "Tabs", new { area = "Admin" })">Tab 2</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tab3" href="#" data-url="@Url.Action("LoadTab3", "Tabs", new { area = "Admin" })">Tab 3</a>
+    </li>
+</ul>
+
+<!-- Content Area to Load Partial Views -->
+<div id="tabContent" class="mt-3">
+    <!-- Initially Empty, Will Load Via AJAX -->
+</div>
+
+<!-- jQuery AJAX Script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {debugger
+        // Load the first tab (Tab 1) by default
+        var defaultTabUrl = $("#tab1").data("url");
+        $("#tabContent").load(defaultTabUrl);
+
+        // Click event for tabs
+        $(".nav-link").click(function (e) {
+            e.preventDefault();
+
+            // Remove active class from all tabs and add to the clicked tab
+            $(".nav-link").removeClass("active");
+            $(this).addClass("active");
+
+            // Get the URL for the partial view
+            var url = $(this).data("url");
+
+            // Load the partial view into the tabContent div
+            $("#tabContent").load(url);
+        });
+    });
+</script>
