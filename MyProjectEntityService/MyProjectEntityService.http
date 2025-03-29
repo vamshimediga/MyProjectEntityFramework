@@ -1,0 +1,6 @@
+@MyProjectEntityService_HostAddress = http://localhost:5187
+
+GET {{MyProjectEntityService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

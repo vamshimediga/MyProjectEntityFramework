@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,8 @@ namespace EntitiesViewModel
 
         public string Stage { get; set; }
 
-        // Navigation Property
-        public List<ActivityViewModel> Activities { get; set; }
+        [BindNever]
+        public List<ActivityViewModel> Activities { get; set; } = new List<ActivityViewModel>();
+
     }
 }

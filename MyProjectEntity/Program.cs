@@ -5,7 +5,17 @@ using MyProjectEntity.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient<IHttpWrapper, HttpWrapper>();
+
+
+// Register the specific ActivityService
+builder.Services.AddScoped(typeof(ServiceLayer<>));
+builder.Services.AddSingleton<ApiService>();
+
 // Configure Services
+builder.Services.AddHttpClient();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.DataServicesLayer(builder.Configuration);
 

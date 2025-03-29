@@ -2,121 +2,142 @@
 using BusinessLayer;
 using Entities;
 using EntitiesViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class OpportunityController : Controller
     {
+        private readonly ServiceLayer<Opportunity> _service;
         private readonly IMapper _mapper;
-        private readonly IOpportunity _opportunity;
-        public OpportunityController(IOpportunity opportunity,IMapper mapper) {
-        
-            _mapper = mapper;
-            _opportunity = opportunity;
-        }
-        public ActionResult Index()
+        private readonly ApiService _apiService;
+
+        public OpportunityController(ServiceLayer<Opportunity> service, IMapper mapper, ApiService apiService)
         {
-            return View();
+            _service = service;
+            _mapper = mapper;
+            _apiService = apiService;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            //List<Opportunity> opportunitiesDto = await _service.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity));
+            //List<OpportunityViewModel> viewModel = _mapper.Map<List<OpportunityViewModel>>(opportunitiesDto);
+            //return View(viewModel);
+            return View();
+        }
         // GET: OpportunityController
         public async Task<JsonResult> GetOpportunities()
         {
-            List<Opportunity> opportunities = await _opportunity.GetAllOpportunitiesAsync();
-            List<OpportunityViewModel> opportunityViewModels = _mapper.Map<List<OpportunityViewModel>>(opportunities);
-            return Json(opportunityViewModels);
+            List<Opportunity> opportunitiesDto = await _service.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity));
+            List<OpportunityViewModel> viewModel = _mapper.Map<List<OpportunityViewModel>>(opportunitiesDto);
+            return Json(viewModel);
         }
-
-        // GET: OpportunityController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            Opportunity opportunity = await _opportunity.GetOpportunityByIdAsync(id);
-            OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunity);
-            return View(opportunityViewModel);
+            Opportunity opportunityDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity), id);
+            if (opportunityDto == null)
+                return NotFound();
+
+            OpportunityViewModel viewModel = _mapper.Map<OpportunityViewModel>(opportunityDto);
+            return View(viewModel);
         }
 
-        // GET: OpportunityController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            OpportunityViewModel opportunityViewModel = new OpportunityViewModel();
-            return View(opportunityViewModel);
+            return View(new OpportunityViewModel());
         }
 
-        // POST: OpportunityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(OpportunityViewModel opportunityViewModel)
+        public async Task<IActionResult> Create(OpportunityViewModel opportunityViewModel)
         {
+            if (!ModelState.IsValid)
+                return View(opportunityViewModel);
+
             try
             {
-                Opportunity opportunity = _mapper.Map<Opportunity>(opportunityViewModel);
-                int id = await _opportunity.InsertOpportunityAsync(opportunity);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var opportunity = _mapper.Map<Opportunity>(opportunityViewModel);
+                int id = await _service.AddAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity), opportunity);
 
-        // GET: OpportunityController/Edit/5
-        public async Task<ActionResult> Edit(int id)
-        {
-            Opportunity opportunity = await _opportunity.GetOpportunityByIdAsync(id);
-            OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunity);
+                if (id > 0)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error creating opportunity: " + ex.Message);
+            }
             return View(opportunityViewModel);
         }
 
-        // POST: OpportunityController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, OpportunityViewModel opportunityViewModel)
+        public async Task<IActionResult> Edit(int id)
         {
-            try
-            {
-                Opportunity opportunity = _mapper.Map<Opportunity>(opportunityViewModel);
-                bool b = await _opportunity.UpdateOpportunityAsync(opportunity);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Opportunity opportunityDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity), id);
+            if (opportunityDto == null)
+                return NotFound();
+
+            OpportunityViewModel viewModel = _mapper.Map<OpportunityViewModel>(opportunityDto);
+            return View(viewModel);
         }
 
-        // GET: OpportunityController/Delete/5
-        //public async Task<ActionResult> Delete(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, OpportunityViewModel opportunityViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(opportunityViewModel);
+
+            try
+            {
+                var opportunity = _mapper.Map<Opportunity>(opportunityViewModel);
+                bool isSuccess = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Opportunity)}/{id}", opportunity);
+
+                if (isSuccess)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating opportunity: " + ex.Message);
+            }
+            return View(opportunityViewModel);
+        }
+
+        //public async Task<IActionResult> Delete(int id)
         //{
-        //    Opportunity opportunity = await _opportunity.GetOpportunityByIdAsync(id);
-        //    OpportunityViewModel opportunityViewModel = _mapper.Map<OpportunityViewModel>(opportunity);
-        //    return View(opportunityViewModel);
+        //    Opportunity opportunityDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity), id);
+        //    if (opportunityDto == null)
+        //        return NotFound();
+
+        //    OpportunityViewModel viewModel = _mapper.Map<OpportunityViewModel>(opportunityDto);
+        //    return View(viewModel);
         //}
 
-        // POST: OpportunityController/Delete/5
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        [ValidateAntiForgeryToken] // Ensures CSRF protection
+        public async Task<JsonResult> Delete(int opportunityID)
         {
             try
             {
-                bool isDeleted = await _opportunity.DeleteOpportunityAsync(id);
-                if (isDeleted)
+                // Simulating the delete operation from the service or repository
+               bool isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity), opportunityID);
+
+                if (!isSuccess)
                 {
-                    return Json(new { success = true, message = "Opportunity deleted successfully." });
+                    return Json(new { success = false, message = "Failed to delete the opportunity." });
                 }
-                else
-                {
-                    return Json(new { success = false, message = "Failed to delete opportunity." });
-                }
+
+                return Json(new { success = true, message = "Opportunity deleted successfully!" });
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return Json(new { success = false, message = "Error: " + ex.Message });
             }
         }
+
     }
 }

@@ -1,118 +1,116 @@
 ﻿using AutoMapper;
-using BusinessLayer;
 using Entities;
 using EntitiesViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ActivityController : Controller
     {
-        public readonly IActivity _activity;
-        public readonly IMapper _mapper;
-        public readonly IOpportunity _opportunity;
-        public ActivityController(IActivity activity,IMapper mapper,IOpportunity opportunity) {
-           _activity = activity;
-           _mapper = mapper;
-            _opportunity = opportunity;
+        private readonly ServiceLayer<Activity> _service;
+        private readonly ServiceLayer<Opportunity> _serviceOpportunity;
+        private readonly IMapper _mapper;
+        private readonly ApiService _apiService;
 
-        }
-        // GET: ActivityController
-        public async Task<ActionResult> Index()
+        public ActivityController(ServiceLayer<Activity> service, IMapper mapper, ServiceLayer<Opportunity> serviceOpportunity, ApiService apiService)
         {
-            List<Activity> activities = (List<Activity>)await _activity.GetAllActivitiesAsync();
-            List<ActivityViewModel> viewModel = _mapper.Map<List<ActivityViewModel>>(activities); 
+            _service = service;
+            _mapper = mapper;
+            _serviceOpportunity = serviceOpportunity;
+            _apiService = apiService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            List<Activity> activitiesDto = await _service.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Activity));
+            List<ActivityViewModel> viewModel = _mapper.Map<List<ActivityViewModel>>(activitiesDto);
             return View(viewModel);
         }
 
-        // GET: ActivityController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-
-            Activity activity = await _activity.GetActivityByIdAsync(id);
-            ActivityViewModel activityViewModel = _mapper.Map<ActivityViewModel>(activity);
-
-            return View(activityViewModel);
+            Activity activitiesDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Activity), id);
+            ActivityViewModel viewModel = _mapper.Map<ActivityViewModel>(activitiesDto);
+            return View(viewModel);
         }
 
-        // GET: ActivityController/Create
-        public async Task<ActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             ActivityViewModel activityViewModel = new ActivityViewModel();
-            List<Opportunity> opportunities = await _opportunity.GetAllOpportunitiesAsync();
-            activityViewModel.opportunities = _mapper.Map<List<OpportunityViewModel>>(opportunities);
+            List<Opportunity> opportunitiesDto = await _serviceOpportunity.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity));
+            List<OpportunityViewModel> opportunitiesvm = _mapper.Map<List<OpportunityViewModel>>(opportunitiesDto);
+            activityViewModel.opportunities = opportunitiesvm;
             return View(activityViewModel);
         }
 
-        // POST: ActivityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ActivityViewModel activityViewModel)
+        public async Task<IActionResult> Create(ActivityViewModel activityViewModel)
         {
             try
             {
-                Activity activity =  _mapper.Map<Activity>(activityViewModel);
-                int id = await _activity.InsertActivityAsync(activity);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var activity = _mapper.Map<Activity>(activityViewModel);
+                int id = await _service.AddAsync(_apiService.GetApiUrl(ApiEndpoint.Activity), activity);
 
-        // GET: ActivityController/Edit/5
-        public async Task<ActionResult> Edit(int id)
-        {
-            Activity activity = await _activity.GetActivityByIdAsync(id);
-            ActivityViewModel activityViewModel = _mapper.Map<ActivityViewModel>(activity);
-            List<Opportunity> opportunities = await _opportunity.GetAllOpportunitiesAsync();
-            activityViewModel.opportunities = _mapper.Map<List<OpportunityViewModel>>(opportunities);
+                if (id != null)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error creating activity: " + ex.Message);
+            }
             return View(activityViewModel);
         }
 
-        // POST: ActivityController/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            Activity activitiesDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Activity), id);
+            ActivityViewModel viewModel = _mapper.Map<ActivityViewModel>(activitiesDto);
+            List<Opportunity> opportunitiesDto = await _serviceOpportunity.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Opportunity));
+            List<OpportunityViewModel> opportunitiesvm = _mapper.Map<List<OpportunityViewModel>>(opportunitiesDto);
+            viewModel.opportunities = opportunitiesvm;
+            return View(viewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, ActivityViewModel activityViewModel)
+        public async Task<IActionResult> Edit(int id, ActivityViewModel activityViewModel)
         {
             try
             {
-                Activity activity = _mapper.Map<Activity>(activityViewModel);
-                bool b= await _activity.UpdateActivityAsync(activity);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var activity = _mapper.Map<Activity>(activityViewModel);
+                bool isSuccess = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Activity)}/{id}", activity);
 
-        // GET: ActivityController/Delete/5
-        public async Task<ActionResult> Delete(int id)
-        {
-            Activity activity = await _activity.GetActivityByIdAsync(id);
-            ActivityViewModel activityViewModel = _mapper.Map<ActivityViewModel>(activity);
+                if (isSuccess)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating activity: " + ex.Message);
+            }
             return View(activityViewModel);
         }
 
-        // POST: ActivityController/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            Activity activitiesDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Activity), id);
+            ActivityViewModel viewModel = _mapper.Map<ActivityViewModel>(activitiesDto);
+            return View(viewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int ActivityID)
         {
-            try
-            { 
-                bool b =  await _activity.DeleteActivityAsync(id);
+            bool isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.Activity), ActivityID);
+            if (isSuccess)
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+            ModelState.AddModelError("", "Error deleting activity.");
+            return RedirectToAction(nameof(Delete), new { ActivityID });
         }
     }
 }
