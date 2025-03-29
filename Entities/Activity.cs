@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Entities
 {
@@ -24,7 +25,7 @@ namespace Entities
        
         public int OpportunityID { get; set; }
 
-       
+    
         public Opportunity Opportunity { get; set; }
     }
 }

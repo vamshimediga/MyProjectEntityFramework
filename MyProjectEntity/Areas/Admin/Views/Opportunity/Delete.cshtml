@@ -44,7 +44,7 @@
         </dd>
     </dl>
 
-    @using (Html.BeginForm("Delete", "Opportunity", FormMethod.Post))
+    @using (Html.BeginForm("DeleteConfirmed", "Opportunity", FormMethod.Post))
     {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.OpportunityID)

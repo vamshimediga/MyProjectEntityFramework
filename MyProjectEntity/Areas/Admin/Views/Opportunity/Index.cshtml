@@ -81,9 +81,12 @@
             }
 
             $.ajax({
-                url: "/Admin/Opportunity/Delete/" + opportunityID,
+                url: "/Admin/Opportunity/Delete", // No opportunityID in URL
                 type: "POST",
-                data: { __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() }, // CSRF Token
+                data: {
+                    opportunityID: opportunityID, // Send opportunityID in the request body
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() // CSRF Token
+                },
                 dataType: "json",
                 success: function (response) {
                     if (response.success) {
@@ -94,9 +97,10 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert("Error: " + xhr.responseText);
+                    alert("Error: " + xhr.status + " - " + xhr.responseText); // More details for debugging
                 }
             });
+
         }
     });
 
