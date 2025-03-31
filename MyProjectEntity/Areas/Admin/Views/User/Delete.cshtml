@@ -44,7 +44,7 @@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form> *@
-    <form asp-action="Delete" method="post">
+    <form asp-action="DeleteConfirmed" method="post">
         @Html.AntiForgeryToken()
 
         <!-- Pass the UserId as a hidden field -->
