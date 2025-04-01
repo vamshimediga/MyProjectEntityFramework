@@ -1,111 +1,109 @@
 ﻿using AutoMapper;
-using BusinessLayer;
 using Entities;
 using EntitiesViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class PostController : Controller
     {
-
-        private readonly IPosts _posts;
+        private readonly ServiceLayer<PostDomainModel> _service;
         private readonly IMapper _mapper;
-        public PostController(IPosts posts, IMapper mapper)
-        {
+        private readonly ApiService _apiService;
 
-            _posts = posts;
+        public PostController(ServiceLayer<PostDomainModel> service, IMapper mapper, ApiService apiService)
+        {
+            _service = service;
             _mapper = mapper;
-        }
-        // GET: PostController
-        public async Task<ActionResult> Index()
-        {
-            List<PostDomainModel> posts = await _posts.Getpostlist();
-            List<PostViewModel> postsViewModel = _mapper.Map<List<PostViewModel>>(posts);
-            return View(postsViewModel);
+            _apiService = apiService;
         }
 
-        // GET: PostController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Index()
         {
-            PostDomainModel postDomainModel = await _posts.GetPostByIdAsync(id);
-            PostViewModel postViewModel = _mapper.Map<PostViewModel>(postDomainModel);
-            return View(postViewModel);
+            List<PostDomainModel> postsDto = await _service.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Post));
+            List<PostViewModel> viewModel = _mapper.Map<List<PostViewModel>>(postsDto);
+            return View(viewModel);
         }
 
-        // GET: PostController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Details(int id)
         {
-            PostViewModel postViewModel = new PostViewModel();
-            return View(postViewModel);
+            PostDomainModel postDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Post), id);
+            PostViewModel viewModel = _mapper.Map<PostViewModel>(postDto);
+            return View(viewModel);
         }
 
-        // POST: PostController/Create
+        public IActionResult Create()
+        {
+            return View(new PostViewModel());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(PostViewModel postViewModel)
+        public async Task<IActionResult> Create(PostViewModel postViewModel)
         {
             try
             {
-                PostDomainModel postDomainModel =  _mapper.Map<PostDomainModel>(postViewModel);
-                int b = await _posts.InsertPostAsync(postDomainModel);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                PostDomainModel post = _mapper.Map<PostDomainModel>(postViewModel);
+                int id = await _service.AddAsync(_apiService.GetApiUrl(ApiEndpoint.Post), post);
 
-        // GET: PostController/Edit/5
-        public async Task<ActionResult> Edit(int id)
-        {
-            PostDomainModel postDomainModel = await _posts.GetPostByIdAsync(id);
-            PostViewModel postViewModel = _mapper.Map<PostViewModel>(postDomainModel);
+                if (id > 0)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error creating post: " + ex.Message);
+            }
             return View(postViewModel);
         }
 
-        // POST: PostController/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            PostDomainModel postDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Post), id);
+            PostViewModel viewModel = _mapper.Map<PostViewModel>(postDto);
+            return View(viewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, PostViewModel postViewModel)
+        public async Task<IActionResult> Edit(int id, PostViewModel postViewModel)
         {
             try
             {
-                PostDomainModel postDomainModel = _mapper.Map<PostDomainModel>(postViewModel);
-                int b = await _posts.UpdatePostAsync(postDomainModel);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                PostDomainModel post = _mapper.Map<PostDomainModel>(postViewModel);
+                bool isSuccess = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Post)}/{id}", post);
 
-        // GET: PostController/Delete/5
-        public async Task<ActionResult> Delete(int id)
-        {
-            PostDomainModel postDomainModel = await _posts.GetPostByIdAsync(id);
-            PostViewModel postViewModel = _mapper.Map<PostViewModel>(postDomainModel);
+                if (isSuccess)
+                    return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating post: " + ex.Message);
+            }
             return View(postViewModel);
         }
 
-        // POST: PostController/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            PostDomainModel postDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Post), id);
+            PostViewModel viewModel = _mapper.Map<PostViewModel>(postDto);
+            return View(viewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                int b = await _posts.DeletePostAsync(id);
+            bool isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.Post), id);
+            if (isSuccess)
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+            ModelState.AddModelError("", "Error deleting post.");
+            return RedirectToAction(nameof(Delete), new { id });
         }
     }
 }
