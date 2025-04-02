@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities;
 using EntitiesViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 namespace MyProjectEntity.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")] // ✅ Only Admin can access this controller
     public class ActivityController : Controller
     {
         private readonly ServiceLayer<Activity> _service;

@@ -1,4 +1,5 @@
 using BusinessLayer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MyProject.APIEndpoints;
 using MyProjectEntity;
 using MyProjectEntity.Middleware;
@@ -32,6 +33,20 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Redirect to login page
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Redirect unauthorized users
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -67,6 +82,7 @@ app.UseRouting();
 // Enable Authentication & Authorization (Order matters)
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStatusCodePagesWithRedirects("/Account/AccessDenied");
 app.MapControllers(); // ? Enable attribute-based routing
 // Map Minimal API Endpoints
 app.UseEndpoints(endpoints =>
@@ -82,7 +98,7 @@ app.MapControllerRoute(
 // Route for non-area controllers
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 
 app.Run();
