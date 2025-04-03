@@ -1,66 +1,76 @@
 ﻿using AutoMapper;
-using BusinessLayer;
 using Entities;
 using EntitiesViewModel;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ContactController : Controller
     {
-        private readonly IContact _contact;
+        private readonly ServiceLayer<Contact> _service;
         private readonly IMapper _mapper;
-        public ContactController(IContact contact,IMapper mapper)
+        private readonly ApiService _apiService;
+
+        public ContactController(ServiceLayer<Contact> service, IMapper mapper, ApiService apiService)
         {
-            _contact = contact;
+            _service = service;
             _mapper = mapper;
+            _apiService = apiService;
         }
+
         // GET: ContactController
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
-            List<Contact> contacts = await _contact.GetContacts(); 
-            List<ContactViewModel> contactsViewModel = _mapper.Map<List<ContactViewModel>>(contacts); 
+            List<Contact> contacts = await _service.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Contact));
+            List<ContactViewModel> contactsViewModel = _mapper.Map<List<ContactViewModel>>(contacts);
             return View(contactsViewModel);
         }
 
         // GET: ContactController/Details/5
-        public async  Task<ActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            Contact contact = await _contact.GetContactById(id);
-            ContactViewModel contactViewModel = _mapper.Map<ContactViewModel>(contact); 
+            Contact contact = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Contact), id);
+            ContactViewModel contactViewModel = _mapper.Map<ContactViewModel>(contact);
             return View(contactViewModel);
         }
 
         // GET: ContactController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            ContactViewModel contact = new ContactViewModel();
-            return View(contact);
+            ContactViewModel contactViewModel = new ContactViewModel();
+            return View(contactViewModel);
         }
 
         // POST: ContactController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ContactViewModel contact)
+        public async Task<IActionResult> Create(ContactViewModel contactViewModel)
         {
             try
             {
-                Contact contactDATA= _mapper.Map<Contact>(contact); 
-                bool B=await _contact.Insert(contactDATA);
-                return RedirectToAction(nameof(Index));
+                Contact contact = _mapper.Map<Contact>(contactViewModel);
+                int id = await _service.AddAsync(_apiService.GetApiUrl(ApiEndpoint.Contact), contact);
+
+                if (id > 0)
+                    return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "Error creating contact: " + ex.Message);
             }
+            return View(contactViewModel);
         }
 
         // GET: ContactController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            Contact contact = await _contact.GetContactById(id);
+            Contact contact = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Contact), id);
             ContactViewModel contactViewModel = _mapper.Map<ContactViewModel>(contact);
             return View(contactViewModel);
         }
@@ -68,26 +78,27 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         // POST: ContactController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, ContactViewModel contact)
+        public async Task<IActionResult> Edit(int id, ContactViewModel contactViewModel)
         {
             try
             {
+                Contact contact = _mapper.Map<Contact>(contactViewModel);
+                bool isSuccess = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Contact)}/{id}", contact);
 
-                Contact contactDATA = _mapper.Map<Contact>(contact);
-                bool B = await _contact.Update(contactDATA);
-                return RedirectToAction(nameof(Index));
-             
+                if (isSuccess)
+                    return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", "Error updating contact: " + ex.Message);
             }
+            return View(contactViewModel);
         }
 
         // GET: ContactController/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Contact contact = await _contact.GetContactById(id);
+            Contact contact = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Contact), id);
             ContactViewModel contactViewModel = _mapper.Map<ContactViewModel>(contact);
             return View(contactViewModel);
         }
@@ -95,17 +106,14 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         // POST: ContactController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int ContactID)
         {
-            try
-            {
-                bool bb = await _contact.Delete(id);    
+            bool isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.Contact), ContactID);
+            if (isSuccess)
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+
+            ModelState.AddModelError("", "Error deleting contact.");
+            return RedirectToAction(nameof(Delete), new { ContactID });
         }
     }
 }
