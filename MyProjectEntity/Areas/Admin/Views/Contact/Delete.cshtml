@@ -39,10 +39,13 @@
         </dd>
     </dl>
 
-    <form asp-area="Admin" asp-controller="Contacts" asp-action="Delete" method="post">
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.ContactID) <!-- Pass ContactID to the controller -->
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-area="Admin" asp-controller="Contacts" asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </form>
+    @using (Html.BeginForm("DeleteConfirmed", "Contact", new { area = "Admin" }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ContactID) <!-- Pass ContactID to the controller -->
+    
+    <input type="submit" value="Delete" class="btn btn-danger" /> 
+    @Html.ActionLink("Back to List", "Index", "Contact", new { area = "Admin" }, new { @class = "btn btn-secondary" })
+}
+
 </div>

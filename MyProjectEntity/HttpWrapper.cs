@@ -48,9 +48,24 @@ namespace MyProjectEntity
             var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(endpoint, content);
             response.EnsureSuccessStatusCode();
+
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<int>(jsonResponse);
+
+            // Try parsing as int, otherwise as bool
+            if (int.TryParse(jsonResponse, out int intResult))
+            {
+                return intResult;
+            }
+            else if (bool.TryParse(jsonResponse, out bool boolResult))
+            {
+                return boolResult ? 1 : 0;
+            }
+            else
+            {
+                throw new Exception("Unexpected response type.");
+            }
         }
+
 
         public async Task<bool> PutAsync<T>(string endpoint, T data)
         {
