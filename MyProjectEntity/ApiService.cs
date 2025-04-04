@@ -11,6 +11,7 @@
                 ApiEndpoint.User =>  "api/UserAPI",
                 ApiEndpoint.Post => "api/PostAPI",
                 ApiEndpoint.Contact => "api/ContactAPI",
+                ApiEndpoint.Appointment => "api/AppointmentAPI",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -21,7 +22,9 @@
         Opportunity,
         User,
         Post,
-        Contact
+        Contact,
+        Appointment
+
     }
 
 }

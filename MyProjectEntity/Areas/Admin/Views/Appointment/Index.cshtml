@@ -1,0 +1,47 @@
+﻿@model List<AppointmentViewModel>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().AppointmentID)</th>
+            <th>@Html.DisplayNameFor(model => model.First().AppointmentDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().DoctorName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().PatientID)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Patient.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Patient.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Patient.ContactNumber)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.AppointmentID)</td>
+                <td>@Html.DisplayFor(modelItem => item.AppointmentDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.DoctorName)</td>
+                <td>@Html.DisplayFor(modelItem => item.PatientID)</td>
+                <td>@Html.DisplayFor(modelItem => item.Patient.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Patient.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Patient.ContactNumber)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentID }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.AppointmentID }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentID }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
