@@ -94,6 +94,13 @@ namespace MyProjectEntity
 
             CreateMap<Opportunity, OpportunityViewModel>();
             CreateMap<OpportunityViewModel, Opportunity>();
+
+
+            CreateMap<Appointment, AppointmentViewModel>();
+            CreateMap<AppointmentViewModel, Appointment>();
+
+            CreateMap<Patient, PatientViewModel>();
+            CreateMap<PatientViewModel, Patient>();
         }
     }
 }

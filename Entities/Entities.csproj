@@ -170,6 +170,7 @@
   <ItemGroup>
     <Compile Include="Activity.cs" />
     <Compile Include="Apartment.cs" />
+    <Compile Include="Appointment.cs" />
     <Compile Include="Author.cs" />
     <Compile Include="Book.cs" />
     <Compile Include="Category.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Opportunity.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Passport.cs" />
+    <Compile Include="Patient.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PostDomainModel.cs" />
     <Compile Include="Product.cs" />

@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.implemation;
 using BusinessLayer.Implementation;
 using Data;
+using Data.Repositories;
 using Interfaces.@interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,6 +49,7 @@ namespace BusinessLayer
             services.AddScoped<IResident, ResidentRepository>();
             services.AddScoped<IActivity, ActivityRepository>();
             services.AddScoped<IOpportunity, OpportunityRepository>();
+            services.AddScoped<IAppointmentRepository,AppointmentRepository>();
             return services;
         }
     }

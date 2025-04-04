@@ -53,6 +53,9 @@ namespace Data
 
         public DbSet<Opportunity> Opportunities { get; set; }
         public DbSet<Activity> Activities { get; set; }
+
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -171,6 +174,12 @@ namespace Data
                 .WithMany(o => o.Activities)
                 .HasForeignKey(a => a.OpportunityID)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Appointment>()
+            .HasOne(a => a.Patient)
+            .WithMany(p => p.Appointments)
+            .HasForeignKey(a => a.PatientID)
+            .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
