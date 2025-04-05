@@ -1,0 +1,48 @@
+﻿@model IEnumerable<EntitiesViewModel.PatientViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.First().PatientID)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.First().LastName)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.First().ContactNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => item.PatientID)</td>
+                <td>@Html.DisplayFor(m => item.FirstName)</td>
+                <td>@Html.DisplayFor(m => item.LastName)</td>
+                <td>@Html.DisplayFor(m => item.ContactNumber)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PatientID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PatientID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PatientID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -12,6 +12,7 @@
                 ApiEndpoint.Post => "api/PostAPI",
                 ApiEndpoint.Contact => "api/ContactAPI",
                 ApiEndpoint.Appointment => "api/AppointmentAPI",
+                ApiEndpoint.Patient => "api/Patient",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -23,7 +24,8 @@
         User,
         Post,
         Contact,
-        Appointment
+        Appointment,
+        Patient
 
     }
 
