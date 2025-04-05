@@ -50,6 +50,7 @@ namespace BusinessLayer
             services.AddScoped<IActivity, ActivityRepository>();
             services.AddScoped<IOpportunity, OpportunityRepository>();
             services.AddScoped<IAppointmentRepository,AppointmentRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
             return services;
         }
     }
