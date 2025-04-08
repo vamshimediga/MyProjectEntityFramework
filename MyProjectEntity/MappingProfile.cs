@@ -101,6 +101,9 @@ namespace MyProjectEntity
 
             CreateMap<Patient, PatientViewModel>();
             CreateMap<PatientViewModel, Patient>();
+
+            CreateMap<LoginLog,LoginLogViewModel>();
+            CreateMap<LoginLogViewModel, LoginLog>();
         }
     }
 }

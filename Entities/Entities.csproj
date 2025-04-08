@@ -186,6 +186,7 @@
     <Compile Include="Institute.cs" />
     <Compile Include="Lawyer.cs" />
     <Compile Include="Lead.cs" />
+    <Compile Include="LoginLog.cs" />
     <Compile Include="Opportunity.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Passport.cs" />

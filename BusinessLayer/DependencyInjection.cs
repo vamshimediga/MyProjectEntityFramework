@@ -51,6 +51,7 @@ namespace BusinessLayer
             services.AddScoped<IOpportunity, OpportunityRepository>();
             services.AddScoped<IAppointmentRepository,AppointmentRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<ILoginLogRepository, LoginLogRepository>();
             return services;
         }
     }
