@@ -184,7 +184,7 @@ namespace Data
             .OnDelete(DeleteBehavior.Cascade);
 
             //modelBuilder.Entity<LoginLog>().HasNoKey();
-
+            modelBuilder.Entity<LoginLog>().HasNoKey();
             base.OnModelCreating(modelBuilder);
         }
           
