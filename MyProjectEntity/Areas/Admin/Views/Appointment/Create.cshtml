@@ -22,7 +22,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.PatientID, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.PatientID, new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.PatientID, new SelectList(Model.Patients, "PatientID", "FirstName"),"--Please Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
             </div>
 
