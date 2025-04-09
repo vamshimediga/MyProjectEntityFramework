@@ -58,6 +58,12 @@ namespace Data
         public DbSet<Appointment> Appointments { get; set; }
 
         public DbSet<LoginLog> LoginLogs { get; set; }
+
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+
+        public DbSet<Cart> Carts { get; set; }
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -185,6 +191,14 @@ namespace Data
 
             //modelBuilder.Entity<LoginLog>().HasNoKey();
             modelBuilder.Entity<LoginLog>().HasNoKey();
+
+            modelBuilder.Entity<UserProfile>()
+           .HasMany(u => u.Photos)
+           .WithOne(p => p.UserProfile)
+           .HasForeignKey(p => p.UserProfileId);
+
+
+
             base.OnModelCreating(modelBuilder);
         }
           

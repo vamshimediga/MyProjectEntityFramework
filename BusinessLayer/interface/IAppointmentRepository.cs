@@ -14,5 +14,7 @@ namespace BusinessLayer
         Task<int> InsertAppointmentAsync(Appointment appointment);
         Task<bool> UpdateAppointmentAsync(Appointment appointment);
         Task<bool> DeleteAppointmentAsync(int appointmentId);
+
+        Task<bool> AddToCartAsync(int appointmentId);
     }
 }

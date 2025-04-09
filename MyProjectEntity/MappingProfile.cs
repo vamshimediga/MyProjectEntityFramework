@@ -104,6 +104,9 @@ namespace MyProjectEntity
 
             CreateMap<LoginLog,LoginLogViewModel>();
             CreateMap<LoginLogViewModel, LoginLog>();
+
+            CreateMap<UserProfile, UserProfileViewModel>();
+            CreateMap<UserProfileViewModel, UserProfile>();
         }
     }
 }

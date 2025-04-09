@@ -4,6 +4,7 @@ using EntitiesViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
@@ -121,5 +122,24 @@ namespace MyProjectEntity.Areas.Admin.Controllers
             ModelState.AddModelError("", "Error deleting appointment.");
             return RedirectToAction(nameof(Delete), new { AppointmentID });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int appointmentId)
+        {
+            Appointment appointment = new Appointment();
+            string userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            bool success = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Appointment)}/AddTocart/{appointmentId}", appointment);
+
+            if (success)
+            {
+                return Json(new { success = true, message = "Added to cart successfully!" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Failed to add to cart." });
+            }
+        }
+
     }
 }

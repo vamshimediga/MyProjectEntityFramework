@@ -52,6 +52,8 @@ namespace BusinessLayer
             services.AddScoped<IAppointmentRepository,AppointmentRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<ILoginLogRepository, LoginLogRepository>();
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+
             return services;
         }
     }
