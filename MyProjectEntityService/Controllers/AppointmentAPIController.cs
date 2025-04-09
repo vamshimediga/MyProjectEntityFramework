@@ -65,5 +65,14 @@ namespace MyProjectEntityService.Controllers
             
             return Ok(isDeleted);
         }
+
+
+        [HttpPut("AddTocart/{id}")]
+        public async Task<ActionResult> AddTocart(int id)
+        {
+            bool  appointment = await _appointmentRepository.AddToCartAsync(id);
+            return Ok(appointment);
+        }
+
     }
 }

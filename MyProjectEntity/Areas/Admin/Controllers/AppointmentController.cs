@@ -4,6 +4,7 @@ using EntitiesViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MyProjectEntity.Areas.Admin.Controllers
@@ -12,14 +13,16 @@ namespace MyProjectEntity.Areas.Admin.Controllers
     public class AppointmentController : Controller
     {
         private readonly ServiceLayer<Appointment> _service;
+        private readonly ServiceLayer<Patient> _patientService;
         private readonly IMapper _mapper;
         private readonly ApiService _apiService;
 
-        public AppointmentController(ServiceLayer<Appointment> service, IMapper mapper, ApiService apiService)
+        public AppointmentController(ServiceLayer<Appointment> service, IMapper mapper, ApiService apiService, ServiceLayer<Patient> patientService)
         {
             _service = service;
             _mapper = mapper;
             _apiService = apiService;
+            _patientService = patientService;
         }
 
         // GET: AppointmentController
@@ -39,9 +42,12 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: AppointmentController/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             AppointmentViewModel appointmentViewModel = new AppointmentViewModel();
+            List<Patient> patient = await _patientService.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Patient));
+            List<PatientViewModel> patientViewModels = _mapper.Map<List<PatientViewModel>>(patient);
+            appointmentViewModel.Patients = patientViewModels;
             return View(appointmentViewModel);
         }
 
@@ -70,6 +76,9 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         {
             Appointment appointmentDto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.Appointment), id);
             AppointmentViewModel viewModel = _mapper.Map<AppointmentViewModel>(appointmentDto);
+            List<Patient> patient = await _patientService.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Patient));
+            List<PatientViewModel> patientViewModels = _mapper.Map<List<PatientViewModel>>(patient);
+            viewModel.Patients = patientViewModels;
             return View(viewModel);
         }
 
@@ -113,5 +122,24 @@ namespace MyProjectEntity.Areas.Admin.Controllers
             ModelState.AddModelError("", "Error deleting appointment.");
             return RedirectToAction(nameof(Delete), new { AppointmentID });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int appointmentId)
+        {
+            Appointment appointment = new Appointment();
+            string userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            bool success = await _service.UpdateAsync($"{_apiService.GetApiUrl(ApiEndpoint.Appointment)}/AddTocart/{appointmentId}", appointment);
+
+            if (success)
+            {
+                return Json(new { success = true, message = "Added to cart successfully!" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Failed to add to cart." });
+            }
+        }
+
     }
 }

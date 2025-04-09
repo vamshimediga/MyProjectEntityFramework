@@ -25,5 +25,7 @@ namespace EntitiesViewModel
         // Navigation property
         
         public PatientViewModel Patient { get; set; }
+
+        public List<PatientViewModel> Patients { get; set; }    
     }
 }

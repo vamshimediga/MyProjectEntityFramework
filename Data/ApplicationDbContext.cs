@@ -56,6 +56,14 @@ namespace Data
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+
+        public DbSet<LoginLog> LoginLogs { get; set; }
+
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+
+        public DbSet<Cart> Carts { get; set; }
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -180,6 +188,16 @@ namespace Data
             .WithMany(p => p.Appointments)
             .HasForeignKey(a => a.PatientID)
             .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<LoginLog>().HasNoKey();
+            modelBuilder.Entity<LoginLog>().HasNoKey();
+
+            modelBuilder.Entity<UserProfile>()
+           .HasMany(u => u.Photos)
+           .WithOne(p => p.UserProfile)
+           .HasForeignKey(p => p.UserProfileId);
+
+
 
             base.OnModelCreating(modelBuilder);
         }

@@ -116,5 +116,27 @@ namespace Data.Repositories
 
             return affectedRows > 0;
         }
+
+        public async Task<bool> AddToCartAsync(int appointmentId)
+        {
+            try
+            {
+                var appointmentIdParam = new SqlParameter("@AppointmentID", appointmentId);
+                var appointmentAddedDateParam = new SqlParameter("@AddedDate", DateTime.UtcNow);
+
+                await _context.Database.ExecuteSqlRawAsync(
+                    "INSERT INTO Carts (AppointmentID, AddedDate) VALUES (@AppointmentID, @AddedDate)",
+                    appointmentIdParam, appointmentAddedDateParam
+                );
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding to cart: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }

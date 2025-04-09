@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250408101008_addphoto")]
+    partial class addphoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,27 +136,6 @@ namespace Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Books", (string)null);
-                });
-
-            modelBuilder.Entity("Entities.Cart", b =>
-                {
-                    b.Property<int>("CartID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartID"));
-
-                    b.Property<DateTime>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("AppointmentID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CartID");
-
-                    b.HasIndex("AppointmentID");
-
-                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Entities.Category", b =>
@@ -759,17 +741,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("Entities.Cart", b =>
-                {
-                    b.HasOne("Entities.Appointment", "Appointment")
-                        .WithMany()
-                        .HasForeignKey("AppointmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointment");
                 });
 
             modelBuilder.Entity("Entities.Client", b =>
