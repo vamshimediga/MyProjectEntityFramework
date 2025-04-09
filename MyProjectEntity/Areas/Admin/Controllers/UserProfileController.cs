@@ -95,15 +95,15 @@ namespace MyProjectEntity.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int UserProfileID)
+        public async Task<IActionResult> DeleteConfirmed(int UserProfileId)
         {
-            var isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.UserProfile), UserProfileID);
+            var isSuccess = await _service.DeleteAsync(_apiService.GetApiUrl(ApiEndpoint.UserProfile), UserProfileId);
 
             if (isSuccess)
                 return RedirectToAction(nameof(Index));
 
             ModelState.AddModelError("", "Error deleting user profile.");
-            return RedirectToAction(nameof(Delete), new { id = UserProfileID });
+            return RedirectToAction(nameof(Delete), new { id = UserProfileId });
         }
     }
 }
