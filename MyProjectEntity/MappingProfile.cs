@@ -107,6 +107,12 @@ namespace MyProjectEntity
 
             CreateMap<UserProfile, UserProfileViewModel>();
             CreateMap<UserProfileViewModel, UserProfile>();
+
+            CreateMap<AgentDomainModel,AgentViewModel>();
+            CreateMap<AgentViewModel,AgentDomainModel>();
+
+            CreateMap<LeadAgentDomainModel, LeadAgentViewModel>();
+            CreateMap<LeadAgentViewModel, LeadAgentDomainModel>();
         }
     }
 }
