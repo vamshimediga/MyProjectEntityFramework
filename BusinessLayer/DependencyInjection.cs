@@ -54,6 +54,7 @@ namespace BusinessLayer
             services.AddScoped<ILoginLogRepository, LoginLogRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IAgentRepository, AgentRepository>();
+            services.AddScoped<ILeadAgentRepository, LeadAgentRepository>();
 
             return services;
         }
