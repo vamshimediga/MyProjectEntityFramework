@@ -53,6 +53,7 @@ namespace BusinessLayer
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<ILoginLogRepository, LoginLogRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IAgentRepository, AgentRepository>();
 
             return services;
         }

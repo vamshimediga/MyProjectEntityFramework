@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity.cs" />
+    <Compile Include="AgentDomainModel.cs" />
     <Compile Include="Apartment.cs" />
     <Compile Include="Appointment.cs" />
     <Compile Include="Author.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Institute.cs" />
     <Compile Include="Lawyer.cs" />
     <Compile Include="Lead.cs" />
+    <Compile Include="LeadAgentDomainModel.cs" />
     <Compile Include="LoginLog.cs" />
     <Compile Include="Opportunity.cs" />
     <Compile Include="Order.cs" />

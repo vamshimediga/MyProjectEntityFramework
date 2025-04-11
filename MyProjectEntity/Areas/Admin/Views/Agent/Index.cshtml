@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Agent Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Agents</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table id="agentsTable" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Agent ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {debugger
+            $('#agentsTable').DataTable({
+                ajax: {
+                    url: '@Url.Action("GetAllAgents", "Agent", new { area = "Admin" })',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'agentID' },
+                    { data: 'name' },
+                    {
+                        data: 'agentID',
+                        render: function (data) {
+                            return `
+                                <a href="/Admin/Agent/Edit/${data}">Edit</a> |
+                                <a href="/Admin/Agent/Details/${data}">Details</a> |
+                                <a href="/Admin/Agent/Delete/${data}">Delete</a>
+                            `;
+                        },
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        });
+    </script>
+}

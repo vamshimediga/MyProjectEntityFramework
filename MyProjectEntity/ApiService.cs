@@ -14,6 +14,7 @@
                 ApiEndpoint.Appointment => "api/AppointmentAPI",
                 ApiEndpoint.Patient => "api/Patient",
                 ApiEndpoint.UserProfile => "api/UserProfileAPI",
+                ApiEndpoint.Agent => "api/AgentAPI",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -27,7 +28,8 @@
         Contact,
         Appointment,
         Patient,
-        UserProfile
+        UserProfile,
+        Agent
     }
 
 }

@@ -64,6 +64,10 @@ namespace Data
 
         public DbSet<Cart> Carts { get; set; }
 
+        public DbSet<AgentDomainModel> Agents { get; set; }
+        public DbSet<LeadAgentDomainModel> LeadAgents { get; set; }
+
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -198,6 +202,20 @@ namespace Data
            .HasForeignKey(p => p.UserProfileId);
 
 
+            // Define Primary Key for AgentDomainModel (AgentID)
+            modelBuilder.Entity<AgentDomainModel>()
+                .HasKey(a => a.AgentID);
+
+            // Define Primary Key for LeadAgentDomainModel (LeadAgentID)
+            modelBuilder.Entity<LeadAgentDomainModel>()
+                .HasKey(l => l.LeadAgentID);
+
+            // Setup Foreign Key relationship between LeadAgent and Agent
+            modelBuilder.Entity<LeadAgentDomainModel>()
+                .HasOne(l => l.Agent)                   // Each LeadAgent has one Agent
+                .WithMany(a => a.LeadAgents)            // Each Agent can have many LeadAgents
+                .HasForeignKey(l => l.AgentID)          // Foreign key in LeadAgent table
+                .OnDelete(DeleteBehavior.Cascade);      // If Agent is deleted, delete related LeadAgents
 
             base.OnModelCreating(modelBuilder);
         }
