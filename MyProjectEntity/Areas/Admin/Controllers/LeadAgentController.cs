@@ -11,14 +11,16 @@ namespace MyProjectEntity.Areas.Admin.Controllers
     public class LeadAgentController : Controller
     {
         private readonly ServiceLayer<LeadAgentDomainModel> _service;
+        private readonly ServiceLayer<AgentDomainModel> _serviceAgent;
         private readonly IMapper _mapper;
         private readonly ApiService _apiService;
 
-        public LeadAgentController(ServiceLayer<LeadAgentDomainModel> service, IMapper mapper, ApiService apiService)
+        public LeadAgentController(ServiceLayer<LeadAgentDomainModel> service, IMapper mapper, ApiService apiService, ServiceLayer<AgentDomainModel> serviceAgent)
         {
             _service = service;
             _mapper = mapper;
             _apiService = apiService;
+            _serviceAgent = serviceAgent;
         }
 
         public async Task<IActionResult> Index()
@@ -35,9 +37,13 @@ namespace MyProjectEntity.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View(new LeadAgentViewModel());
+            List<AgentDomainModel> agentDomainModels = await _serviceAgent.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Agent));
+            List<AgentViewModel> agentViewModels = _mapper.Map<List<AgentViewModel>>(agentDomainModels);
+            LeadAgentViewModel leadAgentViewModel = new LeadAgentViewModel();
+            leadAgentViewModel.Agents = agentViewModels;
+            return View(leadAgentViewModel);
         }
 
         [HttpPost]
