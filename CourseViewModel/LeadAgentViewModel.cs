@@ -13,6 +13,8 @@ namespace EntitiesViewModel
         public string LeadName { get; set; }
 
         public int AgentID { get; set; }       // Foreign Key
-        public AgentDomainModel Agent { get; set; }
+        public AgentViewModel Agent { get; set; }
+
+        public List<AgentViewModel> Agents { get; set; }
     }
 }
