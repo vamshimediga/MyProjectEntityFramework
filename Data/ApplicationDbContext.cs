@@ -34,9 +34,9 @@ namespace Data
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Contact> Contacts { get; set; }
 
-        public DbSet<UserDomainModel>   users { get; set; }
+        public DbSet<UserDomainModel> users { get; set; }
 
-        public DbSet<PostDomainModel>  posts { get; set; }
+        public DbSet<PostDomainModel> posts { get; set; }
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<Passport> Passports { get; set; }
@@ -66,7 +66,8 @@ namespace Data
 
         public DbSet<AgentDomainModel> Agents { get; set; }
         public DbSet<LeadAgentDomainModel> LeadAgents { get; set; }
-
+        public DbSet<DeveloperDomainModel> Developers { get; set; }
+        public DbSet<SystemAdminDomainModel> SystemAdmins { get; set; }
 
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -105,10 +106,10 @@ namespace Data
                 .HasForeignKey(o => o.CustomerId) // Foreign Key in Order
                 .OnDelete(DeleteBehavior.Cascade); // Cascade delete and update
 
-             modelBuilder.Entity<Order>()
-                 .HasOne(o => o.Customer)
-                 .WithMany(c => c.Orders)
-                 .HasForeignKey(o => o.CustomerId);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerId);
 
             modelBuilder.Entity<Product>()
           .HasOne(p => p.Category)
@@ -134,11 +135,11 @@ namespace Data
            .HasForeignKey(e => e.DepartmentID)
            .OnDelete(DeleteBehavior.Cascade);
 
-             modelBuilder.Entity<Contact>()
-                .HasOne(c => c.Lead)              // A Contact has one Lead
-                .WithMany(l => l.Contacts)        // A Lead has many Contacts
-                .HasForeignKey(c => c.LeadID)     // Foreign Key in Contact
-                .OnDelete(DeleteBehavior.Cascade); // Cascade Delete
+            modelBuilder.Entity<Contact>()
+               .HasOne(c => c.Lead)              // A Contact has one Lead
+               .WithMany(l => l.Contacts)        // A Lead has many Contacts
+               .HasForeignKey(c => c.LeadID)     // Foreign Key in Contact
+               .OnDelete(DeleteBehavior.Cascade); // Cascade Delete
 
 
             modelBuilder.Entity<PostDomainModel>()
@@ -217,8 +218,14 @@ namespace Data
                 .HasForeignKey(l => l.AgentID)          // Foreign key in LeadAgent table
                 .OnDelete(DeleteBehavior.Cascade);      // If Agent is deleted, delete related LeadAgents
 
+            modelBuilder.Entity<SystemAdminDomainModel>()
+         .HasOne(sa => sa.Developer)
+         .WithMany(d => d.SystemAdmins)
+         .HasForeignKey(sa => sa.DeveloperId)
+         .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
         }
-          
+
     }
 }

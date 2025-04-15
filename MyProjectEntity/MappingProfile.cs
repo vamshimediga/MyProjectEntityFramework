@@ -113,6 +113,12 @@ namespace MyProjectEntity
 
             CreateMap<LeadAgentDomainModel, LeadAgentViewModel>();
             CreateMap<LeadAgentViewModel, LeadAgentDomainModel>();
+
+            CreateMap<DeveloperDomainModel, DeveloperViewModel>();
+            CreateMap<DeveloperViewModel, DeveloperDomainModel>();
+
+            CreateMap<SystemAdminDomainModel, SystemAdminViewModel>();
+            CreateMap<SystemAdminViewModel,SystemAdminDomainModel>();
         }
     }
 }
