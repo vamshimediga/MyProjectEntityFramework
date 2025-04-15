@@ -16,6 +16,7 @@
                 ApiEndpoint.UserProfile => "api/UserProfileAPI",
                 ApiEndpoint.Agent => "api/AgentAPI",
                 ApiEndpoint.LeadAgent => "api/LeadAgentAPI",
+                ApiEndpoint.Developer => "api/DeveloperAPI",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -31,7 +32,9 @@
         Patient,
         UserProfile,
         Agent,
-        LeadAgent
+        LeadAgent,
+        Developer
+
     }
 
 }
