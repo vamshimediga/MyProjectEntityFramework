@@ -48,6 +48,8 @@ namespace Data.Migrations
                 name: "IX_SystemAdmins_DeveloperId",
                 table: "SystemAdmins",
                 column: "DeveloperId");
+
+
         }
 
         /// <inheritdoc />

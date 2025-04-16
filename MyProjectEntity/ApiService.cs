@@ -17,6 +17,7 @@
                 ApiEndpoint.Agent => "api/AgentAPI",
                 ApiEndpoint.LeadAgent => "api/LeadAgentAPI",
                 ApiEndpoint.Developer => "api/DeveloperAPI",
+                ApiEndpoint.SystemAdmin => "api/SystemAdminAPI",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -33,7 +34,8 @@
         UserProfile,
         Agent,
         LeadAgent,
-        Developer
+        Developer,
+        SystemAdmin
 
     }
 

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<EntitiesViewModel.SystemAdminViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemAdminId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdminName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeveloperId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SystemAdminId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdminName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeveloperId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.SystemAdminId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.SystemAdminId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.SystemAdminId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
