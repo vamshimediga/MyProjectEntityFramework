@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.DeveloperId, htmlAttributes: new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.DeveloperId, new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.DeveloperId, new SelectList(Model.Developers, "DeveloperId","Name"),"--Please Select--", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.DeveloperId, "", new { @class = "text-danger" })
             </div>
 

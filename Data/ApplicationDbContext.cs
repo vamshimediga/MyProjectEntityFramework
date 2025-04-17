@@ -69,6 +69,9 @@ namespace Data
         public DbSet<DeveloperDomainModel> Developers { get; set; }
         public DbSet<SystemAdminDomainModel> SystemAdmins { get; set; }
 
+        public DbSet<TeamLead> TeamLeads { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
+
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -223,6 +226,12 @@ namespace Data
          .WithMany(d => d.SystemAdmins)
          .HasForeignKey(sa => sa.DeveloperId)
          .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TeamLead>()
+            .HasMany(tl => tl.TeamMembers)
+            .WithOne(tm => tm.TeamLead)
+            .HasForeignKey(tm => tm.TeamLeadId)
+            .OnDelete(DeleteBehavior.Cascade); // Optional: cascade delete
 
             base.OnModelCreating(modelBuilder);
         }

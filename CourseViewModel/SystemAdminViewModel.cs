@@ -17,5 +17,7 @@ namespace EntitiesViewModel
 
         // Navigation property
         public virtual DeveloperViewModel Developer { get; set; }
+
+        public List<DeveloperViewModel> Developers { get; set; }
     }
 }
