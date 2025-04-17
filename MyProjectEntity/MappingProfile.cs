@@ -119,6 +119,12 @@ namespace MyProjectEntity
 
             CreateMap<SystemAdminDomainModel, SystemAdminViewModel>();
             CreateMap<SystemAdminViewModel,SystemAdminDomainModel>();
+
+            CreateMap<TeamMember, TeamMemberViewModel>();
+            CreateMap<TeamMemberViewModel, TeamMember>();
+
+            CreateMap<TeamLead, TeamLeadViewModel>();
+            CreateMap<TeamLeadViewModel, TeamLead>();   
         }
     }
 }

@@ -203,6 +203,8 @@
     <Compile Include="Resident.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="SystemAdminDomainModel.cs" />
+    <Compile Include="TeamLead.cs" />
+    <Compile Include="TeamMember.cs" />
     <Compile Include="UserDomainModel.cs" />
     <Compile Include="UserProfile.cs" />
   </ItemGroup>

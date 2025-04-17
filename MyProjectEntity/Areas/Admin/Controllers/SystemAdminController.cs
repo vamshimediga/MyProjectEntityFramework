@@ -15,12 +15,13 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         private readonly ServiceLayer<SystemAdminDomainModel> _service;
         private readonly IMapper _mapper;
         private readonly ApiService _apiService;
-
-        public SystemAdminController(ServiceLayer<SystemAdminDomainModel> service, IMapper mapper, ApiService apiService)
+        private readonly ServiceLayer<DeveloperDomainModel> _devservice;
+        public SystemAdminController(ServiceLayer<SystemAdminDomainModel> service, IMapper mapper, ApiService apiService, ServiceLayer<DeveloperDomainModel> devservice)
         {
             _service = service;
             _mapper = mapper;
             _apiService = apiService;
+            _devservice = devservice;
         }
 
         public async Task<IActionResult> Index()
@@ -37,9 +38,13 @@ namespace MyProjectEntity.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View(new SystemAdminViewModel());
+            List<DeveloperDomainModel> developerDomainModels = await _devservice.GetAllAsync(_apiService.GetApiUrl(ApiEndpoint.Developer));
+            List<DeveloperViewModel> ViewModel = _mapper.Map<List<DeveloperViewModel>>(developerDomainModels);
+            SystemAdminViewModel systemAdminViewModel = new SystemAdminViewModel();
+            systemAdminViewModel.Developers= ViewModel;
+            return View(systemAdminViewModel);
         }
 
         [HttpPost]
