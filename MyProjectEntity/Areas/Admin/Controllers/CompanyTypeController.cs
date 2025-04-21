@@ -31,12 +31,7 @@ namespace MyProjectEntity.Areas.Admin.Controllers
         }
 
         // GET: CompanyType/Details/5
-        public async Task<IActionResult> Details(int id)
-        {
-            CompanyTypeDomainModel dto = await _service.GetByIdAsync(_apiService.GetApiUrl(ApiEndpoint.CompanyType), id);
-            CompanyTypeViewModel viewModel = _mapper.Map<CompanyTypeViewModel>(dto);
-            return View(viewModel);
-        }
+      
 
         // GET: CompanyType/Create
         public IActionResult Create()
