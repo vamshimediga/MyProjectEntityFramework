@@ -31,11 +31,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.TeamLeadId}) |
-                    @Html.ActionLink("Details", "Details", new { id = item.TeamLeadId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TeamLeadId })
-            </td>
+                <td>
+                    <a href="@Url.Action("Edit", "TeamLead")?id=@item.TeamLeadId">Edit</a> |
+                    <a href="@Url.Action("Details", "TeamLead")?id=@item.TeamLeadId">Details</a> |
+                    <a href="@Url.Action("Delete", "TeamLead")?id=@item.TeamLeadId">Delete</a>
+                </td>
+
+
         </tr>
 }
     </tbody>

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyProjectEntity.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,8 @@ namespace Data
         public DbSet<TeamLead> TeamLeads { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
 
+        public DbSet<CompanyTypeDomainModel> CompanyTypes { get; set; }
+        public DbSet<OpptypeDomainModel> Opptypes { get; set; }
         // Configuring relationships in OnModelCreating
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -232,6 +235,13 @@ namespace Data
             .WithOne(tm => tm.TeamLead)
             .HasForeignKey(tm => tm.TeamLeadId)
             .OnDelete(DeleteBehavior.Cascade); // Optional: cascade delete
+
+
+            modelBuilder.Entity<CompanyTypeDomainModel>()
+    .HasMany(ct => ct.Opptypes)
+    .WithOne(op => op.CompanyType)
+    .HasForeignKey(op => op.CompanyTypeID)
+    .OnDelete(DeleteBehavior.Cascade); // Optional: cascade delete
 
             base.OnModelCreating(modelBuilder);
         }
