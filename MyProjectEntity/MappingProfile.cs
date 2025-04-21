@@ -125,6 +125,12 @@ namespace MyProjectEntity
 
             CreateMap<TeamLead, TeamLeadViewModel>();
             CreateMap<TeamLeadViewModel, TeamLead>();   
+
+            CreateMap<CompanyTypeDomainModel, CompanyTypeViewModel>();
+            CreateMap<CompanyTypeViewModel, CompanyTypeDomainModel>();
+
+            CreateMap<OpptypeDomainModel, OpptypeViewModel>();
+            CreateMap<OpptypeViewModel, OpptypeDomainModel>();
         }
     }
 }

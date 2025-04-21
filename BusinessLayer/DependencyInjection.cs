@@ -2,6 +2,7 @@
 using BusinessLayer.Implementation;
 using Data;
 using Data.Repositories;
+using Entities;
 using Interfaces.@interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,6 +59,7 @@ namespace BusinessLayer
             services.AddScoped<IDeveloperRepository, DeveloperRepository>();
             services.AddScoped<ISystemAdmin, SystemAdminRepository>();
             services.AddScoped<ITeamLeadRepository,TeamLeadAdoRepository>();
+            services.AddScoped<ICompanyTypeRepository, CompanyTypeRepository>();
 
             return services;
         }
