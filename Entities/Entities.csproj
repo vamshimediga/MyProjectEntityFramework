@@ -210,6 +210,7 @@
     <Compile Include="TeamMember.cs" />
     <Compile Include="UserDomainModel.cs" />
     <Compile Include="UserProfile.cs" />
+    <Compile Include="UserRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

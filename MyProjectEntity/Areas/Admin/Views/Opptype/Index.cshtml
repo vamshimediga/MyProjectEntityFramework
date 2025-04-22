@@ -1,0 +1,48 @@
+﻿@model IEnumerable<EntitiesViewModel.OpptypeViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OpptypeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpptypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyTypeID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpptypeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpptypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyTypeID)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.OpptypeID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.OpptypeID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.OpptypeID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
