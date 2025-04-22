@@ -20,6 +20,7 @@
                 ApiEndpoint.SystemAdmin => "api/SystemAdminAPI",
                 ApiEndpoint.TeamLead => "api/TeamLeadAPI",
                 ApiEndpoint.CompanyType => "api/CompanyTypeAPI",
+                ApiEndpoint.Opptype => "api/OpptypeAPI",
                 _ => throw new ArgumentException("Invalid API endpoint")
             };
         }
@@ -39,7 +40,8 @@
         Developer,
         SystemAdmin,
         TeamLead,
-        CompanyType
+        CompanyType,
+        Opptype
 
     }
 

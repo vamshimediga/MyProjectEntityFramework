@@ -60,7 +60,7 @@ namespace BusinessLayer
             services.AddScoped<ISystemAdmin, SystemAdminRepository>();
             services.AddScoped<ITeamLeadRepository,TeamLeadAdoRepository>();
             services.AddScoped<ICompanyTypeRepository, CompanyTypeRepository>();
-
+            services.AddScoped<IOpptypeRepository,OpptypeRepository>();
             return services;
         }
     }
