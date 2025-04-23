@@ -15,5 +15,7 @@ namespace BusinessLayer
 
         Task<bool> Update(OpptypeDomainModel opptypeDomainModel);
 
+        Task<bool> DeleteAsync(int id);
+
     }
 }
