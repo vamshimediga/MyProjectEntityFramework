@@ -52,6 +52,12 @@ namespace MyProjectEntityService.Controllers
             return Ok(updated);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var result = await _opptypeRepository.DeleteAsync(id);
+            return Ok(result);
+        }
 
         // You can add PUT and DELETE logic later if needed.
     }

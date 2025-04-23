@@ -113,5 +113,22 @@ namespace BusinessLayer.implemation
             }
         }
 
+        public async Task<bool> DeleteAsync(int opptypeId)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlCommand cmd = new SqlCommand("DeleteOptype", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@OpptypeID", opptypeId);
+
+                await conn.OpenAsync();
+                int rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+                // Return true if at least one row was deleted
+                return rowsAffected > 0;
+            }
+        }
+
+
     }
 }
